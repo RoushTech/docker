@@ -14,6 +14,9 @@ ENV TERM=xterm-256color \
     LOG_PATHS="" \
     PAGER="less"
 
+LABEL org.opencontainers.image.source https://github.com/RoushTech/docker
+MAINTAINER "RoushTech <support@roushtech.net>"
+
 # Add the app user
 RUN <<INITIAL_INSTALL
   set -ue
