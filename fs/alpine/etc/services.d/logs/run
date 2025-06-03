@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+source $(dirname "$0")/../common.sh
+
+echo "[$DIR] Reading logs from \$LOG_PATHS"
+# for each file in $LOG_PATHS seperated by spaces, make an array list and append it if it exists
+
+# if LOG_PATHS is empty, exit
+if [ -z "$LOG_PATHS" ]; then
+  echo "[$DIR] No log files found, exiting."
+  sleep infinity
+  exit 1
+else
+  # Make a list of log files from LOG_PATHS
+  LOG_FILES=()
+  IFS=' ' read -r -a LOG_FILES <<< "$LOG_PATHS"
+
+  echo "[$DIR] Configured log files:"
+  for file in "${LOG_FILES[@]}"; do
+    echo "[$DIR]  $file"
+  done
+  for file in "${LOG_FILES[@]}"; do
+    # Wrap every tail in a subshell to avoid blocking and prepend the file name to the output
+    tail -F "$file" 2> /dev/null | while IFS= read -r line; do
+      echo "[$DIR:$(basename "$file")] $line"
+    done
+  done
+
+  # wait for all background processes to finish
+  wait
+fi

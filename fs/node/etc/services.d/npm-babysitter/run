@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+source $(dirname "$0")/../common.sh
+
+# MB: I am fully aware that this is dis-gust-tang. I hang my head in shame.
+(
+# Reasons not to run...
+if [ -z "$NPM_CACHE_DIR" ]; then
+    echo "[$DIR] NPM_CACHE_DIR is not set. Set it to enable."
+    exit 0
+fi
+if [ ! -d "$NPM_CACHE_DIR" ]; then
+    echo "[$DIR] NPM_CACHE_DIR does not exist. Create it to enable."
+    exit 0
+fi
+
+# After that, just send it every 60 ish seconds.
+while true; do
+    sleep 60
+    /usr/local/bin/npm-perms-fix
+done
+) 2>&1 | while read -r line; do
+    echo "[$DIR] $line"
+done

@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+source $(dirname "$0")/../common.sh
+
+# Split the space-seperated list of paths into an array from NPM_WATCH_PATHS
+if [ -z "$NPM_WATCH_PATHS" ]; then
+  echo "[$DIR] No watch paths found, not starting. Setting NPM_WATCH_PATHS to a string of paths seperated by spaces will activate this service."
+  sleep infinity
+  exit 1
+fi
+
+WATCH_PATHS=()
+IFS=' ' read -r -a WATCH_PATHS <<< "$NPM_WATCH_PATHS"
+
+echo "[$DIR] Configured watch paths:"
+for NPM_PATH in "${WATCH_PATHS[@]}"; do
+  echo "[$DIR]  $NPM_PATH"
+done
+
+# Install npm dependencies for each path
+for NPM_PATH in "${WATCH_PATHS[@]}"; do
+(
+    if [ -d "$NPM_PATH" ]; then
+      echo "Installing dependencies in $NPM_PATH"
+      exec chpst -u php npm --prefix "$NPM_PATH" install
+    else
+      echo "Directory $NPM_PATH does not exist, skipping npm install."
+    fi
+) 2>&1 | while read -r line; do
+    # if line is empty, skip it
+    if [ -z "$line" ]; then
+      continue
+    fi
+    echo "[$DIR:$NPM_PATH] $line"
+  done
+done
+
+# Start watching each path with npm watch
+for NPM_PATH in "${WATCH_PATHS[@]}"; do
+  (
+    pushd $NPM_PATH || exit 1
+    set -x
+    banner "Install tools!"
+    su -c "npm install" php
+    banner "Watch!"
+    su -c "npm run watch" php
+    set +x
+    popd
+    echo "Huh npm exited? This is unexpected."
+
+  ) 2>&1 | while read -r line; do
+    # if line is empty, skip it
+    if [ -z "$line" ]; then
+      continue
+    fi
+    echo "[$DIR:$NPM_PATH] $line"
+  done
+done

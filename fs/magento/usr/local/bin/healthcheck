@@ -1,0 +1,6 @@
+#!/bin/bash
+if [ -f /etc/services.d/magento/starting ]; then
+  echo "Magento is starting up, healthcheck is not ready yet, spare the httpd the pain"
+  exit 0
+fi
+exec curl -f http://localhost:80

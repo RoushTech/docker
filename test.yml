@@ -1,0 +1,44 @@
+services:
+  magento-php81:
+    build:
+      context: .
+      dockerfile: Magento.Dockerfile
+      target: magento-81-node-base
+    ports:
+      - "3050:80"
+  php84:
+    build:
+      context: .
+      dockerfile: PHP.Dockerfile
+      target: php-84-base
+    configs:
+      - source: php_info
+        target: /app/public/index.php
+    ports:
+      - "3084:80"
+  php81:
+    build:
+      context: .
+      dockerfile: PHP.Dockerfile
+      target: php-81-base
+    configs:
+      - source: php_info
+        target: /app/public/index.php
+    ports:
+      - "3081:80"
+  php74:
+    build:
+      context: .
+      dockerfile: PHP.Dockerfile
+      target: php-74-base
+    configs:
+      - source: php_info
+        target: /app/public/index.php
+    ports:
+      - "3074:80"
+
+configs:
+  php_info:
+    content: |
+      <?php
+      phpinfo();

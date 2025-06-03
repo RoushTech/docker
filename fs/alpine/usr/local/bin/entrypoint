@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# Check we're running as root
+if [ "$(id -u)" != "0" ]; then
+  echo "This container must start as root and will de-privilege its tasks." 1>&2
+  exit 1
+fi
+
+# Fixup perms.
+/usr/local/bin/sv-fix-perms
+
+echo "[entrypoint] System Path: $PATH"
+
+## Set runit to run as the default service manager
+exec runsvdir -P /etc/services.d
