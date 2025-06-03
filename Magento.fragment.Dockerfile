@@ -1,5 +1,10 @@
 USER root
 
+LABEL org.opencontainers.image.source https://github.com/RoushTech/docker \
+      org.opencontainers.image.description "Magento Runner" \
+      org.opencontainers.image.vendor "RoushTech"
+MAINTAINER "RoushTech <support@roushtech.net>"
+
 COPY ./fs/magento/. /
 RUN <<MAGENTO_CONFIGURE
   chmod +x /usr/local/bin/*
