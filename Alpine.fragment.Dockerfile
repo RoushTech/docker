@@ -9,10 +9,12 @@ ARG BASE_PACKAGES="\
     dos2unix patch"
 
 ENV TERM=xterm-256color \
-    PS1="\[\e[31m\][\[\e[m\]\[\e[38;5;32m\]\u\[\e[m\]@\[\e[38;5;153m\]\H\[\e[m\] \[\e[38;5;74m\]\W\[\e[m\]\[\e[31m\]]\[\e[m\]\\$ " \
     PATH="/app:/app/bin:$PATH" \
     LOG_PATHS="" \
-    PAGER="less"
+    SVDIR="/etc/services.d" \
+    SVWAIT=5 \
+    PAGER="/usr/bin/less" \
+    EDITOR="/usr/bin/nano"
 
 # Add the app user
 RUN <<INITIAL_INSTALL
@@ -21,7 +23,9 @@ RUN <<INITIAL_INSTALL
   adduser -D -u 1000 app -h /home/app -s /bin/bash
 
   # We're about to add the root filesystem and I want to clean house of these runit-related directories before I do so.
-  rm -Rf /etc/service /etc/services /etc/services.d
+  rm -Rf /etc/service /etc/services /etc/services.d \
+        /etc/periodic /etc/cron.d \
+        /etc/conf.d
 INITIAL_INSTALL
 SHELL ["/bin/bash", "-ce"]
 

@@ -9,3 +9,4 @@ Matt's wants and TODO list
 - [ ] PS1 terminal prompt needs a color reset at its begining
 - [ ] Rework docker-bake to use matrixes to improve DRY.
 - [ ] Fix magento cron
+- [x] Make root shell a different color

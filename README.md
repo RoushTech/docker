@@ -55,7 +55,8 @@ More can be read in the [runit documentation](http://smarden.org/runit) particul
 | `PHP_DEBUG_MODE`       | `php+`          | `null`                                                    | `on`                                                                                           | Enable or disable debug mode.                                                                        |
 | `PHP_ERROR_REPORTING`  | `php+`          | `E_ALL` if `PHP_DEBUG_MODE` is `on`. `E_ERROR` otherwise. | [Expressions from error_reporting](https://www.php.net/manual/en/function.error-reporting.php) | override error_reporting level.                                                                      |
 | `PHP_DISPLAY_ERRORS`   | `php+`          | `on` when `PHP_DEBUG_MODE` is on. `off` otherwise         | `on` or `off`                                                                                  | Enable or disable display errors.                                                                    |
-| `LOG_PATHS`            | `alpine+`       | ``, overridden by `php` base image etc.                   | Space seperated paths.                                                                         | Paths to collect logs from. The paths of files to collect logs from and write them to stdout.        |
+| `NTP_SERVER`           | `base+`         | `0.pool.ntp.org`                                          | Any valid NTP server address                                                                   | The NTP server to use for time synchronization.                                                      |
+| `LOG_PATHS`            | `base+`         | ``, overridden by `php` base image etc.                   | Space seperated paths.                                                                         | Paths to collect logs from. The paths of files to collect logs from and write them to stdout.        |
 
 ## Versions available
 
