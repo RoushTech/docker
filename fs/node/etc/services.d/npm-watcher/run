@@ -3,7 +3,7 @@ source $(dirname "$0")/../common.sh
 
 # Split the space-seperated list of paths into an array from NPM_WATCH_PATHS
 if [ -z "$NPM_WATCH_PATHS" ]; then
-  echo "[$DIR] No watch paths found, not starting. Setting NPM_WATCH_PATHS to a string of paths seperated by spaces will activate this service."
+  echo "[$DIR] No watch paths found, not starting. Setting ${COLOR_YELLOW}NPM_WATCH_PATHS${COLOR_RESET} to a string of paths seperated by spaces will activate this service."
   sleep infinity
   exit 1
 fi
