@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
-if ! npm-perms-check ; then
-    echo "Checking for bad permissions in npm cache ($NPM_CACHE_DIR) ..."
-    echo "Bad permissions found! Fixing ..."
-    find $NPM_CACHE_DIR -not -user app -exec echo "ls -lah {}" \;
-    find $NPM_CACHE_DIR -not -user app -exec chown -c app {} \;
-    echo "Permissions fixed."
-    exit 1;
+if ! npm-perms-check; then
+	echo "Checking for bad permissions in npm cache ($NPM_CACHE_DIR) ..."
+	echo "Bad permissions found! Fixing ..."
+	find $NPM_CACHE_DIR -not -user app -exec echo "ls -lah {}" \;
+	find $NPM_CACHE_DIR -not -user app -exec chown -c app {} \;
+	echo "Permissions fixed."
+	exit 1
 else
-    exit 0;
+	exit 0
 fi

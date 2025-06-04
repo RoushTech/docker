@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 FIGLET_FONT=${FIGLET_FONT:-4Max}
-COLS=$(/usr/bin/tput cols) || 160;
+COLS=$(/usr/bin/tput cols) || 160
 COLS=$((COLS - 15)) # Reserve space for the [service name] prefix
 
 figlet -w $COLS -f $FIGLET_FONT "$@" | lolcat -f || figlet -w $COLS -f $FIGLET_FONT "$@"

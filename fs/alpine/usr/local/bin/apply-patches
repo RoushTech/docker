@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 pwd
 for file in /app/patches/*.patch; do
-  echo "Applying patch: $file"
-  patch -p1 < "$file"
+	echo "Applying patch: $file"
+	patch -p1 <"$file"
 done

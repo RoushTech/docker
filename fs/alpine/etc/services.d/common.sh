@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC2155
 set -eE -o functrace
-if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
-    echo "This script is intended to be sourced, not executed directly."
-    exit 1
+if [[ ${BASH_SOURCE[0]} == "${0}" ]]; then
+	echo "This script is intended to be sourced, not executed directly."
+	exit 1
 fi
 
 failure() {
-  local lineno=$1
-  local msg=$2
-  echo "${COLOR_RED}Failed at $lineno: $msg ${COLOR_RESET}" 1>&2
+	local lineno=$1
+	local msg=$2
+	echo "${COLOR_RED}Failed at $lineno: $msg ${COLOR_RESET}" 1>&2
 }
 trap 'failure ${LINENO} "$BASH_COMMAND"' ERR
 
@@ -26,5 +26,5 @@ export COLOR_YELLOW=$(tput setaf 3)
 
 # if /app exists, change to it.
 if [ -d /app ]; then
-    cd /app
+	cd /app
 fi

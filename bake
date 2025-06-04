@@ -3,9 +3,9 @@ set -e
 cd "$(dirname "$0")"
 TARGET=${1:-""}
 source $(dirname "$0")/.common.sh
-function finish(){
-    builder_destroy || true
-    ring_bell
+function finish() {
+	builder_destroy || true
+	ring_bell
 }
 
 trap finish EXIT
@@ -16,15 +16,15 @@ builder_init
 echo "Pulling base images ... "
 docker_pull_base_images "Alpine.Dockerfile"
 
-SECONDS=0;
+SECONDS=0
 docker \
-  buildx \
-  --builder $MULTIARCH_BUILDER_NAME \
-    bake \
-    --file docker-bake.hcl \
-    $(if [ -f "docker-bake.override.hcl" ]; then echo "--file docker-bake.override.hcl"; fi) \
-    --provenance=false \
-    --push \
-      $TARGET
+	buildx \
+	--builder $MULTIARCH_BUILDER_NAME \
+	bake \
+	--file docker-bake.hcl \
+	$(if [ -f "docker-bake.override.hcl" ]; then echo "--file docker-bake.override.hcl"; fi) \
+	--provenance=false \
+	--push \
+	$TARGET
 echo "Base Image Build Complete in ${COLOR_GREEN}${SECONDS}${COLOR_RESET} seconds!"
 echo "Build of base image target ${COLOR_YELLOW}'$TARGET'${COLOR_RESET} completed."

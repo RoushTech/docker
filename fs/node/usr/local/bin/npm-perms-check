@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Exits with 1 if anything in the npm cache directory is not owned by the php user.
 if [[ $(find $NPM_CACHE_DIR -not -user app | wc -l) != "0" ]]; then
-  exit 1;
+	exit 1
 fi
-exit 0;
+exit 0
