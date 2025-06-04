@@ -21,6 +21,8 @@ docker \
   buildx \
   --builder $MULTIARCH_BUILDER_NAME \
     bake \
+    --file docker-bake.hcl \
+    $(if [ -f "docker-bake.override.hcl" ]; then echo "--file docker-bake.override.hcl"; fi) \
     --provenance=false \
     --push \
       $TARGET
