@@ -1,0 +1,90 @@
+configs:
+  node_test:
+    content: |
+      #!/bin/bash
+      DETECTED_ALPINE_VERSION=$(cat /etc/os-release | grep -E 'VERSION_ID' | cut -d'=' -f2 | tr -d '"' | cut -d'.' -f1-2)
+      DETECTED_PHP_VERSION=$(php --version | head -n 1 | cut -d' ' -f2 | cut -d'.' -f1-2)
+      DETECTED_NODE_VERSION=$(node --version | cut -d'.' -f1 | sed 's/v//')
+      DETECTED_NPM_VERSION=$(npm --version | cut -d'.' -f1)
+      FAILURE=0
+
+      echo -e "Alpine version\n detected: $${DETECTED_ALPINE_VERSION}\n expected: $${EXPECTED_ALPINE_VERSION}"
+      if [ "$${DETECTED_ALPINE_VERSION}" != "$${EXPECTED_ALPINE_VERSION}" ]; then
+        echo "Alpine version $${DETECTED_ALPINE_VERSION} does not match expected version $${EXPECTED_ALPINE_VERSION}"
+        FAILURE=1 
+      fi
+
+      echo -e "PHP version\n detected: $${DETECTED_PHP_VERSION}\n expected: $${EXPECTED_PHP_VERSION}"
+      if [ "$${DETECTED_PHP_VERSION}" != "$${EXPECTED_PHP_VERSION}" ]; then
+        echo "PHP version $${DETECTED_PHP_VERSION} does not match expected version $${EXPECTED_PHP_VERSION}"
+        FAILURE=1 
+      fi
+
+      echo -e "Node.js version\n detected: $${DETECTED_NODE_VERSION}\n expected: $${EXPECTED_NODE_VERSION}"
+      if [ "$${DETECTED_NODE_VERSION}" != "$${EXPECTED_NODE_VERSION}" ]; then
+        echo "Node.js version $${DETECTED_NODE_VERSION} does not match expected version $${EXPECTED_NODE_VERSION}"
+        FAILURE=1 
+      fi
+
+      echo -e "NPM version\n detected: $${DETECTED_NPM_VERSION}\n expected: $${EXPECTED_NPM_VERSION}"
+      if [ "$${DETECTED_NPM_VERSION}" != "$${EXPECTED_NPM_VERSION}" ]; then
+        echo "NPM version $${DETECTED_NPM_VERSION} does not match expected version $${EXPECTED_NPM_VERSION}"
+        FAILURE=1 
+      fi
+
+      if [ $${FAILURE} -eq 0 ]; then
+          echo "All versions match expected values."
+      else
+          echo "One or more versions do not match expected values."
+          exit 1
+      fi
+
+services:
+  magento-php84-node-test:
+    build:
+      dockerfile: Magento.Dockerfile
+      target: magento-84-node-base
+    command: ["bash", "/app/test.sh"]
+    configs:
+      - source: node_test
+        target: /app/test.sh
+    environment: &php84_expected
+      EXPECTED_ALPINE_VERSION: "3.21"
+      EXPECTED_PHP_VERSION: "8.4"
+      EXPECTED_NODE_VERSION: "22"
+      EXPECTED_NPM_VERSION: "10"
+  magento-php81-node-test:
+    build:
+      dockerfile: Magento.Dockerfile
+      target: magento-81-node-base
+    command: ["bash", "/app/test.sh"]
+    configs:
+      - source: node_test
+        target: /app/test.sh
+    environment: &php81_expected
+      EXPECTED_ALPINE_VERSION: "3.18"
+      EXPECTED_PHP_VERSION: "8.1"
+      EXPECTED_NODE_VERSION: "18"
+      EXPECTED_NPM_VERSION: "9"
+  php84-node-test:
+    build:
+      context: .
+      dockerfile: PHP.Dockerfile
+      target: php-84-node-base
+    command: ["bash", "/app/test.sh"]
+    configs:
+      - source: node_test
+        target: /app/test.sh
+    environment:
+      <<: *php84_expected
+  php81-node-test:
+    build:
+      context: .
+      dockerfile: PHP.Dockerfile
+      target: php-81-node-base
+    command: ["bash", "/app/test.sh"]
+    configs:
+      - source: node_test
+        target: /app/test.sh
+    environment:
+      <<: *php81_expected

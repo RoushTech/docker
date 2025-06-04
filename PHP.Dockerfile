@@ -32,6 +32,8 @@ INCLUDE ./PHP.fragment.Dockerfile
 RUN <<PHP_84_FIXUPS
 ln -s /usr/sbin/php-fpm84 /usr/bin/php-fpm
 ln -s /etc/php /etc/php84
+# Remove duplicate json and redis config files that throw a warning
+rm /etc/php/conf.d/*_json.ini /etc/php/conf.d/*_redis.ini || true
 
 # Verify the output of php -v is as expected:
 if ! php --version | grep -q "PHP 8.4"; then
@@ -40,6 +42,8 @@ if ! php --version | grep -q "PHP 8.4"; then
 fi
 PHP_84_FIXUPS
 
+FROM php-84-base AS php-84-node-base
+INCLUDE ./PHP-Node.fragment.Dockerfile
 
 #       ____  __  ______  ____   ___
 #      / __ \/ / / / __ \( __ ) <  /
@@ -85,7 +89,8 @@ if ! php --version | grep -q "PHP 8.1"; then
 fi
 PHP_81_FIXUPS
 
-
+FROM php-81-base AS php-81-node-base
+INCLUDE ./PHP-Node.fragment.Dockerfile
 
 #       ____  __  ______  _____ __ __
 #      / __ \/ / / / __ \/__  // // /

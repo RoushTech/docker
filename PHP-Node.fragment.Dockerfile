@@ -1,6 +1,3 @@
-# syntax = devthefuture/dockerfile-x
-FROM ./PHP.Dockerfile#php-81-base AS php-81-node-base
-
 ARG NODE_PACKAGES="npm nodejs yarn"
 ENV NPM_CACHE_DIR=/var/cache/.npm \
     YARN_CACHE_FOLDER=/var/cache/.yarn \

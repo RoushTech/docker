@@ -18,9 +18,11 @@ group "default" {
     "alpine-15",
     "php-74",
     "php-81",
+    "php-84",
     "php-81-node",
+    "php-84-node",
     "magento-81",
-    "magento-81-node",
+    "magento-84",
   ]
   labels = {
     "org.opencontainers.image.url"           = "https://github.com/RoushTech/docker"
@@ -40,16 +42,21 @@ group "alpine" {
 }
 group "php" {
   targets = [
-    "php-74",
-    "php-81",
     "php-84",
+    "php-81",
+    "php-74",
+  ]
+}
+group "php-node" {
+  targets = [
+    "php-84-node",
     "php-81-node",
   ]
 }
 group "magento" {
   targets = [
+    "magento-84",
     "magento-81",
-    "magento-81-node",
   ]
 }
 target "alpine-21" {
@@ -127,7 +134,7 @@ target "php-84" {
     }
 }
 target "php-81-node" {
-  dockerfile = "PHP-Node.Dockerfile"
+  dockerfile = "PHP.Dockerfile"
   target     = "php-81-node-base"
   tags       = [
     "ghcr.io/roushtech/docker/php-node:latest",
@@ -139,9 +146,21 @@ target "php-81-node" {
     "org.opencontainers.image.description" = "PHP 8.1 with Node.js base image"
   }
 }
+target "php-84-node" {
+  dockerfile = "PHP.Dockerfile"
+  target     = "php-84-node-base"
+  tags       = [
+    "ghcr.io/roushtech/docker/php-node:8.4",
+    "ghcr.io/roushtech/docker/php-node:8.4-${TIMESTAMP}",
+  ]
+  platforms  = PLATFORMS
+  labels = {
+    "org.opencontainers.image.description" = "PHP 8.4 with Node.js base image"
+  }
+}
 target "magento-81" {
   dockerfile = "Magento.Dockerfile"
-  target     = "magento-81-base"
+  target     = "magento-81-node-base"
   tags       = [
     "ghcr.io/roushtech/docker/magento:latest",
     "ghcr.io/roushtech/docker/magento:8.1",
@@ -149,19 +168,18 @@ target "magento-81" {
   ]
   platforms  = PLATFORMS
   labels = {
-    "org.opencontainers.image.description" = "Magento on PHP 8.1 base image"
+    "org.opencontainers.image.description" = "Magento on PHP 8.1 with Node.js base image"
   }
 }
-target "magento-81-node" {
+target "magento-84" {
   dockerfile = "Magento.Dockerfile"
-  target     = "magento-81-node-base"
+  target     = "magento-84-node-base"
   tags       = [
-    "ghcr.io/roushtech/docker/magento:latest-node",
-    "ghcr.io/roushtech/docker/magento:8.1-node",
-    "ghcr.io/roushtech/docker/magento:8.1-node-${TIMESTAMP}",
+    "ghcr.io/roushtech/docker/magento:8.4",
+    "ghcr.io/roushtech/docker/magento:8.4-${TIMESTAMP}",
   ]
   platforms  = PLATFORMS
   labels = {
-    "org.opencontainers.image.description" = "Magento on PHP 8.1 with Node.js base image"
+    "org.opencontainers.image.description" = "Magento on PHP 8.4 with Node.js base image"
   }
 }

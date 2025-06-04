@@ -5,8 +5,8 @@ source $(dirname "$0")/.common.sh
 DC_CMD="docker compose -f test.yml --progress none"
 
 function finalize {
-  echo "Cleaning up containers..."
-  $DC_CMD down --remove-orphans --volumes >/dev/null || true
+	echo "Cleaning up containers..."
+	$DC_CMD down --timeout 0 --remove-orphans --volumes >/dev/null || true
 }
 trap finalize EXIT
 
@@ -14,13 +14,13 @@ echo "Pulling base images ... "
 docker_pull_base_images "Alpine.Dockerfile"
 
 echo "Running tests ... "
-if ! $DC_CMD up --detach --wait --build ; then
-  banner "Failure!" | colorize $COLOR_RED
-  echo "Container build tests failed."
-  ring_bell "fail"
-  exit 1
+if ! $DC_CMD up --detach --wait --build; then
+	banner "Failure!" | colorize $COLOR_RED
+	echo "Container build tests failed."
+	ring_bell "fail"
+	exit 1
 fi
 
 echo "${COLOR_GREEN}Container build tests passed.${COLOR_RESET}"
 ring_bell "okay"
-exit 0;
+exit 0

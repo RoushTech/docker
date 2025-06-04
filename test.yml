@@ -1,44 +1,37 @@
-services:
-  magento-php81:
-    build:
-      context: .
-      dockerfile: Magento.Dockerfile
-      target: magento-81-node-base
-    ports:
-      - "3050:80"
-  php84:
-    build:
-      context: .
-      dockerfile: PHP.Dockerfile
-      target: php-84-base
-    configs:
-      - source: php_info
-        target: /app/public/index.php
-    ports:
-      - "3084:80"
-  php81:
-    build:
-      context: .
-      dockerfile: PHP.Dockerfile
-      target: php-81-base
-    configs:
-      - source: php_info
-        target: /app/public/index.php
-    ports:
-      - "3081:80"
-  php74:
-    build:
-      context: .
-      dockerfile: PHP.Dockerfile
-      target: php-74-base
-    configs:
-      - source: php_info
-        target: /app/public/index.php
-    ports:
-      - "3074:80"
+include:
+  - test-healthchecks.yml
+  - test-versions.yml
 
-configs:
-  php_info:
-    content: |
-      <?php
-      phpinfo();
+services:
+  test:
+    build:
+      dockerfile_inline: |
+        FROM alpine:3.21
+        RUN apk add --no-cache bash bash-completion curl
+    command: ["sleep", "infinity"]
+    depends_on:
+      # Validation scripts should just exit 0 if the container is happy
+      magento-php84-node-test:
+        condition: service_completed_successfully
+      magento-php81-node-test:
+        condition: service_completed_successfully
+      php84-node-test:
+        condition: service_completed_successfully
+      php81-node-test:
+        condition: service_completed_successfully
+
+      # Healthchecks should be healthy.
+      magento-php84:
+        condition: service_healthy
+      magento-php81:
+        condition: service_healthy
+      php84-node:
+        condition: service_healthy
+      php81-node:
+        condition: service_healthy
+      php84:
+        condition: service_healthy
+      php81:
+        condition: service_healthy
+      php74:
+        condition: service_healthy
