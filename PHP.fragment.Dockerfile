@@ -1,8 +1,3 @@
-LABEL org.opencontainers.image.source https://github.com/RoushTech/docker \
-      org.opencontainers.image.description "PHP Nginx container" \
-      org.opencontainers.image.vendor "RoushTech"
-MAINTAINER "RoushTech <support@roushtech.net>"
-
 VOLUME /var/cache/.composer
 
 # hadolint ignore=DL3018

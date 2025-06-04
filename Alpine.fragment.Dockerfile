@@ -14,11 +14,6 @@ ENV TERM=xterm-256color \
     LOG_PATHS="" \
     PAGER="less"
 
-LABEL org.opencontainers.image.source https://github.com/RoushTech/docker \
-      org.opencontainers.image.description "RoushTech Alpine base image with runit, bash, and common utilities" \
-      org.opencontainers.image.vendor "RoushTech"
-MAINTAINER "RoushTech <support@roushtech.net>"
-
 # Add the app user
 RUN <<INITIAL_INSTALL
   set -ue
