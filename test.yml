@@ -1,6 +1,6 @@
 include:
   - test-healthchecks.yml
-  - test-versions.yml
+  - test-versions-assertions.yml
 
 services:
   test:
@@ -18,6 +18,12 @@ services:
       php84-node-test:
         condition: service_completed_successfully
       php81-node-test:
+        condition: service_completed_successfully
+      base-21:
+        condition: service_completed_successfully
+      base-18:
+        condition: service_completed_successfully
+      base-15:
         condition: service_completed_successfully
 
       # Healthchecks should be healthy.

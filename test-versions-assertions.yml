@@ -1,4 +1,32 @@
 configs:
+  base_test:
+    content: |
+      #!/bin/bash
+      DETECTED_ALPINE_VERSION=$(cat /etc/os-release | grep -E 'VERSION_ID' | cut -d'=' -f2 | tr -d '"' | cut -d'.' -f1-2)
+      EXPECTED_APP_USER_HOME_PATH="/app"
+      FAILURE=0
+
+      echo -e "Alpine version\n detected: $${DETECTED_ALPINE_VERSION}\n expected: $${EXPECTED_ALPINE_VERSION}"
+      if [ "$${DETECTED_ALPINE_VERSION}" != "$${EXPECTED_ALPINE_VERSION}" ]; then
+        echo "Alpine version $${DETECTED_ALPINE_VERSION} does not match expected version $${EXPECTED_ALPINE_VERSION}"
+        FAILURE=1 
+      fi
+
+      DETECTED_APP_USER_HOME_PATH=$(cat /etc/passwd | grep app | cut -d':' -f 6)
+      if [ "$${DETECTED_APP_USER_HOME_PATH}" != "$${EXPECTED_APP_USER_HOME_PATH}" ]; then
+        echo "App user home path $${DETECTED_APP_USER_HOME_PATH} does not match expected path $${EXPECTED_APP_USER_HOME_PATH}"
+        FAILURE=1
+      else
+        echo "App user home path is as expected: $${DETECTED_APP_USER_HOME_PATH}"
+      fi
+
+      if [ $${FAILURE} -eq 0 ]; then
+          echo "All versions match expected values."
+      else
+          echo "One or more versions do not match expected values."
+          exit 1
+      fi
+
   node_test:
     content: |
       #!/bin/bash
@@ -88,3 +116,36 @@ services:
         target: /app/test.sh
     environment:
       <<: *php81_expected
+  base-21:
+    build:
+      context: .
+      dockerfile: Alpine.Dockerfile
+      target: alpine-21-base
+    command: ["bash", "/app/test.sh"]
+    environment:
+      EXPECTED_ALPINE_VERSION: "3.21"
+    configs:
+      - source: base_test
+        target: /app/test.sh
+  base-18:
+    build:
+      context: .
+      dockerfile: Alpine.Dockerfile
+      target: alpine-18-base
+    command: ["bash", "/app/test.sh"]
+    environment:
+      EXPECTED_ALPINE_VERSION: "3.18"
+    configs:
+      - source: base_test
+        target: /app/test.sh
+  base-15:
+    build:
+      context: .
+      dockerfile: Alpine.Dockerfile
+      target: alpine-15-base
+    command: ["bash", "/app/test.sh"]
+    environment:
+      EXPECTED_ALPINE_VERSION: "3.15"
+    configs:
+      - source: base_test
+        target: /app/test.sh
