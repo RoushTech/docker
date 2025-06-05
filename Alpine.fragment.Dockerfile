@@ -53,9 +53,10 @@ STOPSIGNAL SIGHUP
 CMD ["/usr/local/bin/entrypoint"]
 
 RUN <<FIXUP_BASH
-rm ~/.bashrc ~/.profile || true
-ln -s /etc/profile ~/.bashrc
-ln -s /etc/profile ~/.profile
+rm /root/.bashrc /root/.profile /home/app/.bashrc /home/app/.profile || true
+ln -s /etc/profile /root/.bashrc
+ln -s /etc/profile /root/.profile
+ln -s /etc/profile /home/app/.bashrc
+ln -s /etc/profile /home/app/.profile
 sed -i 's|/bin/ash|/bin/bash|' /etc/passwd
 FIXUP_BASH
-

@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+source $(dirname "$0")/../common.sh
+(
+	# wait until /etc/services.d/magento/done exists
+	if [ ! -f /etc/services.d/magento/done ]; then
+		echo "Waiting for Magento to be ready ..."
+		while [ ! -f /etc/services.d/magento/done ]; do
+			sleep 1
+		done
+	fi
+	# Run once first to populate cron lists
+	chpst -u app magento cron:run
+	# Start running cron
+	while true; do
+		chpst -u app magento cron:run
+		sleep 60
+	done
+) 2>&1 | (while IFS= read -r; do echo "${COLOR_RESET}[${DIR}] $REPLY"; done)

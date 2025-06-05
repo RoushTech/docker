@@ -64,4 +64,3 @@ if [ "$(whoami)" != "app" ]; then
 	exec su -s /bin/bash -c "$0" app
 	exit 0
 fi
-echo "Running as $(whoami) in $(pwd)"
