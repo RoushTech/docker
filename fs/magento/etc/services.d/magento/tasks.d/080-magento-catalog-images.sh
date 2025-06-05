@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-DIR="magento-cron"
+DIR="magento-images"
 source $(dirname "$0")/common
 (
-	echo "Installing Magento Cron Jobs"
-	magento cron:install --force
+	echo "Generating Magento Catalog Images"
+	magento catalog:image:resize --async --skip_hidden_images
 ) 2>&1 | (while IFS= read -r; do echo "${COLOR_RESET}[${DIR}] $REPLY"; done)

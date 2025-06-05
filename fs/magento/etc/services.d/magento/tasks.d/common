@@ -1,0 +1,67 @@
+#!/usr/bin/env bash
+if [[ ${BASH_SOURCE[0]} == "${0}" ]]; then
+	echo "This script is intended to be sourced, not executed directly."
+	exit 1
+fi
+source /etc/services.d/common.sh
+function check_envs() {
+	FAILURE=false
+	if [ -z "$BASE_URL" ]; then
+		echo "${COLOR_RED}Error: BASE_URL is not set.${COLOR_RESET}"
+		FAILURE=true
+	fi
+	if [ -z "$MYSQL_HOST" ]; then
+		echo "${COLOR_RED}Error: MYSQL_HOST is not set.${COLOR_RESET}"
+		FAILURE=true
+	fi
+	if [ -z "$MYSQL_DATABASE" ]; then
+		echo "${COLOR_RED}Error: MYSQL_DATABASE is not set.${COLOR_RESET}"
+		FAILURE=true
+	fi
+	if [ -z "$MYSQL_USER" ]; then
+		echo "${COLOR_RED}Error: MYSQL_USER is not set.${COLOR_RESET}"
+		FAILURE=true
+	fi
+	if [ -z "$MYSQL_PASSWORD" ]; then
+		echo "${COLOR_RED}Error: MYSQL_PASSWORD is not set.${COLOR_RESET}"
+		FAILURE=true
+	fi
+	if [ -z "$ADMIN_FIRSTNAME" ]; then
+		echo "${COLOR_RED}Error: ADMIN_FIRSTNAME is not set.${COLOR_RESET}"
+		FAILURE=true
+	fi
+	if [ -z "$ADMIN_LASTNAME" ]; then
+		echo "${COLOR_RED}Error: ADMIN_LASTNAME is not set.${COLOR_RESET}"
+		FAILURE=true
+	fi
+	if [ -z "$ADMIN_EMAIL" ]; then
+		echo "${COLOR_RED}Error: ADMIN_EMAIL is not set.${COLOR_RESET}"
+		FAILURE=true
+	fi
+	if [ -z "$ADMIN_USER" ]; then
+		echo "${COLOR_RED}Error: ADMIN_USER is not set.${COLOR_RESET}"
+		FAILURE=true
+	fi
+	if [ -z "$ADMIN_PASSWORD" ]; then
+		echo "${COLOR_RED}Error: ADMIN_PASSWORD is not set.${COLOR_RESET}"
+		FAILURE=true
+	fi
+
+	if [ -z "$ELASTICSEARCH_HOST" ]; then
+		echo "${COLOR_RED}Error: ELASTICSEARCH_HOST is not set.${COLOR_RESET}"
+		FAILURE=true
+	fi
+
+	if [ "$FAILURE" = true ]; then
+		echo "Please set the required environment variables and try again."
+		exit 1
+	fi
+}
+
+# if not running as app, run as app
+if [ "$(whoami)" != "app" ]; then
+	echo "Running as $(whoami), switching to app user..."
+	exec su -s /bin/bash -c "$0" app
+	exit 0
+fi
+echo "Running as $(whoami) in $(pwd)"
