@@ -16,11 +16,15 @@ ENV TERM=xterm-256color \
     PAGER="/usr/bin/less" \
     EDITOR="/usr/bin/nano"
 
+WORKDIR /app
+
 # Add the app user
 RUN <<INITIAL_INSTALL
   set -ue
   apk add --no-cache $BASE_PACKAGES
-  adduser -D -u 1000 app -h /home/app -s /bin/bash
+
+  # add our app user
+  adduser -D -u 1000 app -h /app -s /bin/bash
 
   # We're about to add the root filesystem and I want to clean house of these runit-related directories before I do so.
   rm -Rf /etc/service /etc/services /etc/services.d \
@@ -55,4 +59,3 @@ ln -s /etc/profile ~/.profile
 sed -i 's|/bin/ash|/bin/bash|' /etc/passwd
 FIXUP_BASH
 
-WORKDIR /app
