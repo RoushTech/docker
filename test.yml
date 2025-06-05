@@ -11,33 +11,33 @@ services:
     command: ["sleep", "infinity"]
     depends_on:
       # Validation scripts should just exit 0 if the container is happy
-      magento-php84-node-test:
+      magento-php84-assertions:
         condition: service_completed_successfully
-      magento-php81-node-test:
+      magento-php81-assertions:
         condition: service_completed_successfully
-      php84-node-test:
+      php84-node-assertions:
         condition: service_completed_successfully
-      php81-node-test:
+      php81-node-assertions:
         condition: service_completed_successfully
-      base-21:
+      base-21-assertions:
         condition: service_completed_successfully
-      base-18:
+      base-18-assertions:
         condition: service_completed_successfully
-      base-15:
+      base-15-assertions:
         condition: service_completed_successfully
 
       # Healthchecks should be healthy.
-      magento-php84:
+      magento-php84-healthchecks:
         condition: service_healthy
-      magento-php81:
+      magento-php81-healthchecks:
         condition: service_healthy
-      php84-node:
+      php84-node-healthchecks:
         condition: service_healthy
-      php81-node:
+      php81-node-healthchecks:
         condition: service_healthy
-      php84:
+      php84-healthchecks:
         condition: service_healthy
-      php81:
+      php81-healthchecks:
         condition: service_healthy
-      php74:
+      php74-healthchecks:
         condition: service_healthy

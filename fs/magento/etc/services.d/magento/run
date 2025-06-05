@@ -33,6 +33,13 @@ function runStartupTasks() {
 
 touch /etc/services.d/magento/starting
 fixCachePerms
+# if "magento" is executable
+if [ ! -x magento ]; then
+	echo "[$DIR] Error: '${COLOR_YELLOW}magento${COLOR_RESET}' utility binary is not detectable!"
+	echo "[$DIR]  You may need to add it to your ${COLOR_YELLOW}PATH${COLOR_RESET}."
+	echo "[$DIR]   PATH: ${COLOR_GREY}${PATH}${COLOR_RESET}"
+	exit 0
+fi
 echo "[$DIR] Starting Magento"
 runStartupTasks
 echo "[$DIR] Magento startup finished in $SECONDS seconds."

@@ -16,12 +16,12 @@ else
 
 	echo "[$DIR] Configured log files:"
 	for file in "${LOG_FILES[@]}"; do
-		echo "[$DIR]  $file"
+		echo "[$DIR]  ${COLOR_GREY}${file}${COLOR_RESET}"
 	done
 	for file in "${LOG_FILES[@]}"; do
 		# Wrap every tail in a subshell to avoid blocking and prepend the file name to the output
 		tail -F "$file" 2>/dev/null | while IFS= read -r line; do
-			echo "[$DIR:$(basename "$file")] $line"
+			echo "[$DIR:$(basename "$file")] ${line}"
 		done
 	done
 

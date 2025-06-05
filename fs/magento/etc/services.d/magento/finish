@@ -12,6 +12,6 @@ if [[ $LAST_PROCESS_EXIT_CODE -ne 0 ]]; then
 	exit 0
 fi
 
-echo "[$DIR] Magento startup finished successfully."
+echo "[$DIR] Magento startup finished."
 touch /etc/services.d/magento/done
 sleep infinity

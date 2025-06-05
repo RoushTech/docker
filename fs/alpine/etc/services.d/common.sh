@@ -23,6 +23,7 @@ export COLOR_RESET=$(tput sgr0)
 export COLOR_GREEN=$(tput setaf 2)
 export COLOR_RED=$(tput setaf 9)
 export COLOR_YELLOW=$(tput setaf 3)
+export COLOR_GREY=$(tput setaf 8)
 
 # if /app exists, change to it.
 if [ -d /app ]; then

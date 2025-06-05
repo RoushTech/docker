@@ -1,18 +1,23 @@
 services:
-  magento-php84:
+  magento-php84-healthchecks:
     build:
       dockerfile: Magento.Dockerfile
       target: magento-84-node-base
+    configs:
+      - source: php_info
+        target: /app/pub/index.php
     ports:
       - "4084:80"
-  magento-php81:
+  magento-php81-healthchecks:
     build:
       dockerfile: Magento.Dockerfile
       target: magento-81-node-base
+    configs:
+      - source: php_info
+        target: /app/pub/index.php
     ports:
       - "4081:80"
-
-  php84-node:
+  php84-node-healthchecks:
     build:
       context: .
       dockerfile: PHP.Dockerfile
@@ -22,7 +27,7 @@ services:
         target: /app/public/index.php
     ports:
       - "3184:80"
-  php81-node:
+  php81-node-healthchecks:
     build:
       context: .
       dockerfile: PHP.Dockerfile
@@ -32,7 +37,7 @@ services:
         target: /app/public/index.php
     ports:
       - "3181:80"
-  php84:
+  php84-healthchecks:
     build:
       context: .
       dockerfile: PHP.Dockerfile
@@ -42,7 +47,7 @@ services:
         target: /app/public/index.php
     ports:
       - "3084:80"
-  php81:
+  php81-healthchecks:
     build:
       context: .
       dockerfile: PHP.Dockerfile
@@ -52,7 +57,7 @@ services:
         target: /app/public/index.php
     ports:
       - "3081:80"
-  php74:
+  php74-healthchecks:
     build:
       context: .
       dockerfile: PHP.Dockerfile

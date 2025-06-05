@@ -4,19 +4,25 @@ cd "$(dirname "$0")"
 source $(dirname "$0")/.common.sh
 DC_CMD="docker compose -f test.yml --progress none"
 
-function finalize {
+function cleanup {
 	echo "Cleaning up containers..."
 	$DC_CMD down --timeout 0 --remove-orphans --volumes >/dev/null || true
+}
+function finalize {
+	cleanup
 }
 trap finalize EXIT
 
 echo "Pulling base images ... "
 docker_pull_base_images "Alpine.Dockerfile"
 
+cleanup
+
 echo "Running tests ... "
 if ! $DC_CMD up --detach --wait --build; then
 	banner "Failure!" | colorize $COLOR_RED
 	echo "Container build tests failed."
+	echo "  Hint: Try running $(docker compose -f tests.yml up --build failed-target) to see more details."
 	ring_bell "fail"
 	exit 1
 fi
