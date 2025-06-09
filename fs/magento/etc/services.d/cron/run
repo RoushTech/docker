@@ -8,8 +8,14 @@ source $(dirname "$0")/../common.sh
 			sleep 1
 		done
 	fi
-	# Run once first to populate cron lists
-	chpst -u app magento cron:run
+
+	# Run once first to populate cron lists. If it fails, disable cron.
+	if ! chpst -u app magento cron:run; then
+		echo "[$DIR] Magento cron failed to run, disabling cron."
+		sleep infinity
+		exit 1
+	fi
+
 	# Start running cron
 	while true; do
 		chpst -u app magento cron:run
