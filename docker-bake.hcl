@@ -13,9 +13,11 @@ variable "TIMESTAMP"{
 }
 group "default" {
   targets = [
+    "alpine-22",
     "alpine-21",
     "alpine-18",
     "alpine-15",
+    "builder-22",
     "builder-21",
     "php-74",
     "php-81",
@@ -36,6 +38,7 @@ group "default" {
 }
 group "alpine" {
   targets = [
+    "alpine-22",
     "alpine-21",
     "alpine-18",
     "alpine-15",
@@ -60,6 +63,18 @@ group "magento" {
     "magento-81",
   ]
 }
+target "alpine-22" {
+  dockerfile = "Alpine.Dockerfile"
+  target     = "alpine-22-base"
+  tags       = [
+    "ghcr.io/roushtech/docker/base:3.22",
+    "ghcr.io/roushtech/docker/base:3.22-${TIMESTAMP}",
+  ]
+  platforms  = PLATFORMS
+  labels = {
+    "org.opencontainers.image.description" = "Roushtech-flavoured Alpine Linux base image"
+  }
+}
 target "alpine-21" {
   dockerfile = "Alpine.Dockerfile"
   target     = "alpine-21-base"
@@ -68,9 +83,9 @@ target "alpine-21" {
     "ghcr.io/roushtech/docker/base:3.21-${TIMESTAMP}",
   ]
   platforms  = PLATFORMS
-    labels = {
-        "org.opencontainers.image.description" = "Roushtech-flavoured Alpine Linux base image"
-    }
+  labels = {
+    "org.opencontainers.image.description" = "Roushtech-flavoured Alpine Linux base image"
+  }
 }
 target "alpine-18" {
   dockerfile = "Alpine.Dockerfile"
@@ -97,6 +112,18 @@ target "alpine-15" {
         "org.opencontainers.image.description" = "Roushtech-flavoured Alpine Linux base image"
     }
 }
+target "builder-22" {
+  dockerfile = "Alpine.Dockerfile"
+  target     = "builder-22-base"
+  tags       = [
+    "ghcr.io/roushtech/docker/builder:3.22",
+    "ghcr.io/roushtech/docker/builder:3.22-${TIMESTAMP}",
+  ]
+  platforms  = PLATFORMS
+  labels = {
+    "org.opencontainers.image.description" = "Roushtech-flavoured Alpine Linux base image that has build tools installed"
+  }
+}
 target "builder-21" {
   dockerfile = "Alpine.Dockerfile"
   target     = "builder-21-base"
@@ -109,17 +136,18 @@ target "builder-21" {
     "org.opencontainers.image.description" = "Roushtech-flavoured Alpine Linux base image that has build tools installed"
   }
 }
-target "php-74" {
+target "php-84" {
   dockerfile = "PHP.Dockerfile"
-  target     = "php-74-base"
+  target     = "php-84-base"
   tags       = [
-    "ghcr.io/roushtech/docker/php:7.4",
-    "ghcr.io/roushtech/docker/php:7.4-${TIMESTAMP}",
+    "ghcr.io/roushtech/docker/php:latest",
+    "ghcr.io/roushtech/docker/php:8.4",
+    "ghcr.io/roushtech/docker/php:8.4-${TIMESTAMP}",
   ]
   platforms  = PLATFORMS
-    labels = {
-        "org.opencontainers.image.description" = "PHP 7.4 base image"
-    }
+  labels = {
+    "org.opencontainers.image.description" = "PHP 8.4 base image"
+  }
 }
 target "php-81" {
   dockerfile = "PHP.Dockerfile"
@@ -133,30 +161,16 @@ target "php-81" {
         "org.opencontainers.image.description" = "PHP 8.1 base image"
     }
 }
-target "php-84" {
+target "php-74" {
   dockerfile = "PHP.Dockerfile"
-  target     = "php-84-base"
+  target     = "php-74-base"
   tags       = [
-    "ghcr.io/roushtech/docker/php:latest",
-    "ghcr.io/roushtech/docker/php:8.4",
-    "ghcr.io/roushtech/docker/php:8.4-${TIMESTAMP}",
-  ]
-  platforms  = PLATFORMS
-    labels = {
-        "org.opencontainers.image.description" = "PHP 8.4 base image"
-    }
-}
-target "php-81-node" {
-  dockerfile = "PHP.Dockerfile"
-  target     = "php-81-node-base"
-  tags       = [
-    "ghcr.io/roushtech/docker/php-node:latest",
-    "ghcr.io/roushtech/docker/php-node:8.1",
-    "ghcr.io/roushtech/docker/php-node:8.1-${TIMESTAMP}",
+    "ghcr.io/roushtech/docker/php:7.4",
+    "ghcr.io/roushtech/docker/php:7.4-${TIMESTAMP}",
   ]
   platforms  = PLATFORMS
   labels = {
-    "org.opencontainers.image.description" = "PHP 8.1 with Node.js base image"
+    "org.opencontainers.image.description" = "PHP 7.4 base image"
   }
 }
 target "php-84-node" {
@@ -171,17 +185,17 @@ target "php-84-node" {
     "org.opencontainers.image.description" = "PHP 8.4 with Node.js base image"
   }
 }
-target "magento-81" {
-  dockerfile = "Magento.Dockerfile"
-  target     = "magento-81-node-base"
+target "php-81-node" {
+  dockerfile = "PHP.Dockerfile"
+  target     = "php-81-node-base"
   tags       = [
-    "ghcr.io/roushtech/docker/magento:latest",
-    "ghcr.io/roushtech/docker/magento:8.1",
-    "ghcr.io/roushtech/docker/magento:8.1-${TIMESTAMP}",
+    "ghcr.io/roushtech/docker/php-node:latest",
+    "ghcr.io/roushtech/docker/php-node:8.1",
+    "ghcr.io/roushtech/docker/php-node:8.1-${TIMESTAMP}",
   ]
   platforms  = PLATFORMS
   labels = {
-    "org.opencontainers.image.description" = "Magento on PHP 8.1 with Node.js base image"
+    "org.opencontainers.image.description" = "PHP 8.1 with Node.js base image"
   }
 }
 target "magento-84" {
@@ -194,5 +208,18 @@ target "magento-84" {
   platforms  = PLATFORMS
   labels = {
     "org.opencontainers.image.description" = "Magento on PHP 8.4 with Node.js base image"
+  }
+}
+target "magento-81" {
+  dockerfile = "Magento.Dockerfile"
+  target     = "magento-81-node-base"
+  tags       = [
+    "ghcr.io/roushtech/docker/magento:latest",
+    "ghcr.io/roushtech/docker/magento:8.1",
+    "ghcr.io/roushtech/docker/magento:8.1-${TIMESTAMP}",
+  ]
+  platforms  = PLATFORMS
+  labels = {
+    "org.opencontainers.image.description" = "Magento on PHP 8.1 with Node.js base image"
   }
 }

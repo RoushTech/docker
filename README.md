@@ -62,9 +62,9 @@ More can be read in the [runit documentation](http://smarden.org/runit) particul
 
 | Container | Is Latest | Version     | Alpine      | PHP Version | Node Version | Tag                                   |
 | --------- | --------- | ----------- | ----------- | ----------- | ------------ | ------------------------------------- |
-| Magento   | ️         |             | Alpine 3.21 | PHP 8.4     | Node 22      | ghcr.io/roushtech/docker/magento:8.4  |
+| Magento   | ️         |             | Alpine 3.22 | PHP 8.4     | Node 22      | ghcr.io/roushtech/docker/magento:8.4  |
 | Magento   | ✔️        |             | Alpine 3.18 | PHP 8.1     | Node 18      | ghcr.io/roushtech/docker/magento:8.1  |
-| PHP+Node  | ️         | PHP 8.4     | Alpine 3.21 | PHP 8.4     | Node 22      | ghcr.io/roushtech/docker/php-node:8.4 |
+| PHP+Node  | ️         | PHP 8.4     | Alpine 3.22 | PHP 8.4     | Node 22      | ghcr.io/roushtech/docker/php-node:8.4 |
 | PHP+Node  | ✔️        | PHP 8.1     | Alpine 3.18 | PHP 8.1     | Node 18      | ghcr.io/roushtech/docker/php-node:8.1 |
 | PHP       |           | PHP 8.4     | Alpine 3.21 | PHP 8.4     |              | ghcr.io/roushtech/docker/php-node:8.4 |
 | PHP       |           | PHP 8.1     | Alpine 3.18 | PHP 8.1     |              | ghcr.io/roushtech/docker/php-node:8.1 |

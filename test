@@ -22,7 +22,7 @@ echo "Running tests ... "
 if ! $DC_CMD up --detach --wait --build; then
 	banner "Failure!" | colorize $COLOR_RED
 	echo "Container build tests failed."
-	echo "  Hint: Try running $(docker compose -f tests.yml up --build failed-target) to see more details."
+	echo '  Hint: Try running "docker compose -f test.yml up --build failed-target" to see more details.'
 	ring_bell "fail"
 	exit 1
 fi

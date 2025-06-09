@@ -77,10 +77,10 @@ services:
       - source: node_test
         target: /app/test.sh
     environment: &php84_expected
-      EXPECTED_ALPINE_VERSION: "3.21"
+      EXPECTED_ALPINE_VERSION: "3.22"
       EXPECTED_PHP_VERSION: "8.4"
       EXPECTED_NODE_VERSION: "22"
-      EXPECTED_NPM_VERSION: "10"
+      EXPECTED_NPM_VERSION: "11"
   magento-php81-assertions:
     build:
       dockerfile: Magento.Dockerfile
@@ -116,6 +116,17 @@ services:
         target: /app/test.sh
     environment:
       <<: *php81_expected
+  base-22-assertions:
+    build:
+      context: .
+      dockerfile: Alpine.Dockerfile
+      target: alpine-22-base
+    command: ["bash", "/app/test.sh"]
+    environment:
+      EXPECTED_ALPINE_VERSION: "3.22"
+    configs:
+      - source: base_test
+        target: /app/test.sh
   base-21-assertions:
     build:
       context: .

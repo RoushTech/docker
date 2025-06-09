@@ -4,7 +4,7 @@
 #     / /_/ / /_/ / /_/ / __  / // /_
 #    / ____/ __  / ____/ /_/ /__  __/
 #   /_/   /_/ /_/_/    \____(_)/_/
-FROM ./Alpine.Dockerfile#alpine-21-base AS php-84-base
+FROM ./Alpine.Dockerfile#alpine-22-base AS php-84-base
 ARG COMPOSER_VERSION=latest-stable
 ARG PHP_PACKAGES="php84 php84-bcmath php84-bz2 php84-calendar php84-ctype php84-curl php84-dom php84-exif php84-fileinfo php84-ftp \
                   php84-fpm php84-gd php84-gettext php84-gmp php84-iconv php84-imap php84-intl php84-json php84-ldap php84-mbstring \
