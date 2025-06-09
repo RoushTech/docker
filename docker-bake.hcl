@@ -16,6 +16,7 @@ group "default" {
     "alpine-21",
     "alpine-18",
     "alpine-15",
+    "builder-21",
     "php-74",
     "php-81",
     "php-84",
@@ -95,6 +96,18 @@ target "alpine-15" {
     labels = {
         "org.opencontainers.image.description" = "Roushtech-flavoured Alpine Linux base image"
     }
+}
+target "builder-21" {
+  dockerfile = "Alpine.Dockerfile"
+  target     = "builder-21-base"
+  tags       = [
+    "ghcr.io/roushtech/docker/builder:3.21",
+    "ghcr.io/roushtech/docker/builder:3.21-${TIMESTAMP}",
+  ]
+  platforms  = PLATFORMS
+  labels = {
+    "org.opencontainers.image.description" = "Roushtech-flavoured Alpine Linux base image that has build tools installed"
+  }
 }
 target "php-74" {
   dockerfile = "PHP.Dockerfile"
