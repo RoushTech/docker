@@ -26,6 +26,13 @@ group "default" {
     "php-84-node",
     "magento-81",
     "magento-84",
+    "java-21",
+    "java-17",
+    "java-11",
+    "java-8",
+    "java-war-machine-21",
+    "java-war-machine-17",
+    "java-war-machine-11",
   ]
   labels = {
     "org.opencontainers.image.url"           = "https://github.com/RoushTech/docker"
@@ -69,6 +76,9 @@ group "java" {
     "java-17",
     "java-11",
     "java-8",
+    "java-war-machine-21",
+    "java-war-machine-17",
+    "java-war-machine-11",
   ]
 }
 target "alpine-22" {
@@ -191,6 +201,42 @@ target "java-8" {
   platforms  = PLATFORMS
   labels = {
     "org.opencontainers.image.description" = "Java JDK 8 base image"
+  }
+}
+target "java-war-machine-21" {
+  dockerfile = "Java.Dockerfile"
+  target     = "java-war-machine-21-base"
+  tags       = [
+    "ghcr.io/roushtech/docker/java:war-machine-21",
+    "ghcr.io/roushtech/docker/java:war-machine-21-${TIMESTAMP}",
+  ]
+  platforms  = PLATFORMS
+  labels = {
+    "org.opencontainers.image.description" = "Java JDK 21 base image that automatically runs WAR files"
+  }
+}
+target "java-war-machine-17" {
+  dockerfile = "Java.Dockerfile"
+  target     = "java-war-machine-17-base"
+  tags       = [
+    "ghcr.io/roushtech/docker/java:war-machine-17",
+    "ghcr.io/roushtech/docker/java:war-machine-17-${TIMESTAMP}",
+  ]
+  platforms  = PLATFORMS
+  labels = {
+    "org.opencontainers.image.description" = "Java JDK 17 base image that automatically runs WAR files"
+  }
+}
+target "java-war-machine-11" {
+  dockerfile = "Java.Dockerfile"
+  target     = "java-war-machine-11-base"
+  tags       = [
+    "ghcr.io/roushtech/docker/java:war-machine-11",
+    "ghcr.io/roushtech/docker/java:war-machine-11-${TIMESTAMP}",
+  ]
+  platforms  = PLATFORMS
+  labels = {
+    "org.opencontainers.image.description" = "Java JDK 11 base image that automatically runs WAR files"
   }
 }
 target "php-84" {

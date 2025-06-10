@@ -2,7 +2,7 @@
 set -e
 cd "$(dirname "$0")"
 source $(dirname "$0")/.common.sh
-DC_CMD="docker compose -f test.yml --progress none"
+DC_CMD="docker compose -f test.yml "
 
 function cleanup {
 	echo "Cleaning up containers..."
@@ -13,16 +13,22 @@ function finalize {
 }
 trap finalize EXIT
 
+#if $1 is passed, thats our target
+if [ -n "$1" ]; then
+	$DC_CMD --progress plain up --build $1
+	exit $?
+fi
+
 echo "Pulling base images ... "
 docker_pull_base_images "Alpine.Dockerfile"
 
 cleanup
 
 echo "Running tests ... "
-if ! $DC_CMD up --detach --wait --build; then
+if ! $DC_CMD --progress none up --detach --wait --build; then
 	banner "Failure!" | colorize $COLOR_RED
 	echo "Container build tests failed."
-	echo '  Hint: Try running "docker compose -f test.yml up --build failed-target" to see more details.'
+	echo "  Hint: Try running ${COLOR_YELLOW}${0} failed-target${COLOR_RESET} to see more details."
 	ring_bell "fail"
 	exit 1
 fi

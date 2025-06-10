@@ -25,6 +25,7 @@ RUN <<INITIAL_INSTALL
 
   # add our app user
   adduser -D -u 1000 app -h /home/app -s /bin/bash
+  chown -R app:app /app
 
   # We're about to add the root filesystem and I want to clean house of these runit-related directories before I do so.
   rm -Rf /etc/service /etc/services /etc/services.d \

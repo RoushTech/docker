@@ -36,6 +36,9 @@ Based on runit. It runs multiple processes internally, and monitors them. In the
 - `magento-*-base`: Magento flavoured base image
   - `/etc/services.d/magento/`: Magento service, which runs the Magento application.
     - Fixes cache permissions, and runs any scripts loaded into `/etc/services.d/magento/tasks.d/` to get your Magento application going and touches `/etc/services.d/magento/done` upon completion.
+- `java-*-base`: Java flavoured base image
+- `java-war-machine-*-base`: Java War Machine flavoured base image
+  - `/etc/services.d/java/`: Java service runner, which runs any `.war` files placed into `/app`
 
 Each directory contains a `run` script that starts the service.
 The `run` script is executed by runit when the container starts.
@@ -46,29 +49,37 @@ More can be read in the [runit documentation](http://smarden.org/runit) particul
 
 ## Configurable Options
 
-| Environment Variable   | Affected Images | Default                                                   | Options                                                                                        | Description                                                                                          |
-| ---------------------- | --------------- | --------------------------------------------------------- | ---------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
-| `MAGENTO_MODE`         | `magento`       | `developer`                                               | `developer` or `production`                                                                    | The mode in which Magento will run.                                                                  |
-| `NPM_WATCH_PATHS`      | `php-node+`     | `""`                                                      | Space seperated paths.                                                                         | Paths to watch for changes. The paths to watch for changes using `npm run watch` in the application. |
-| `PHP_MEMORY_LIMIT`     | `php+`          | `256M`                                                    | `256M`, `2G` etc                                                                               | The memory limit for PHP scripts.                                                                    |
-| `PHP_CLI_MEMORY_LIMIT` | `php+`          | `4G`                                                      | `256M`, `2G` etc                                                                               | The memory limit for PHP CLI scripts.                                                                |
-| `PHP_DEBUG_MODE`       | `php+`          | `null`                                                    | `on`                                                                                           | Enable or disable debug mode.                                                                        |
-| `PHP_ERROR_REPORTING`  | `php+`          | `E_ALL` if `PHP_DEBUG_MODE` is `on`. `E_ERROR` otherwise. | [Expressions from error_reporting](https://www.php.net/manual/en/function.error-reporting.php) | override error_reporting level.                                                                      |
-| `PHP_DISPLAY_ERRORS`   | `php+`          | `on` when `PHP_DEBUG_MODE` is on. `off` otherwise         | `on` or `off`                                                                                  | Enable or disable display errors.                                                                    |
-| `NTP_SERVER`           | `base+`         | `0.pool.ntp.org`                                          | Any valid NTP server address                                                                   | The NTP server to use for time synchronization.                                                      |
-| `LOG_PATHS`            | `base+`         | ``, overridden by `php` base image etc.                   | Space seperated paths.                                                                         | Paths to collect logs from. The paths of files to collect logs from and write them to stdout.        |
+| Environment Variable   | Affected Images    | Default                                                   | Options                                                                                        | Description                                                                                                                      |
+| ---------------------- | ------------------ | --------------------------------------------------------- | ---------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| `MAGENTO_MODE`         | `magento`          | `developer`                                               | `developer` or `production`                                                                    | The mode in which Magento will run.                                                                                              |
+| `NPM_WATCH_PATHS`      | `php-node+`        | `""`                                                      | Space seperated paths.                                                                         | Paths to watch for changes. The paths to watch for changes using `npm run watch` in the application.                             |
+| `PHP_MEMORY_LIMIT`     | `php+`             | `256M`                                                    | `256M`, `2G` etc                                                                               | The memory limit for PHP scripts.                                                                                                |
+| `PHP_CLI_MEMORY_LIMIT` | `php+`             | `4G`                                                      | `256M`, `2G` etc                                                                               | The memory limit for PHP CLI scripts.                                                                                            |
+| `PHP_DEBUG_MODE`       | `php+`             | `null`                                                    | `on`                                                                                           | Enable or disable debug mode.                                                                                                    |
+| `PHP_ERROR_REPORTING`  | `php+`             | `E_ALL` if `PHP_DEBUG_MODE` is `on`. `E_ERROR` otherwise. | [Expressions from error_reporting](https://www.php.net/manual/en/function.error-reporting.php) | override error_reporting level.                                                                                                  |
+| `PHP_DISPLAY_ERRORS`   | `php+`             | `on` when `PHP_DEBUG_MODE` is on. `off` otherwise         | `on` or `off`                                                                                  | Enable or disable display errors.                                                                                                |
+| `WAR_FILE`             | `java-war-machine` | `null`                                                    | Path to a `.war` file.                                                                         | An explicit path to the `.war` file to run. Will be autodetected if not present. Only neccisary if executable name is ambiguous. |
+| `NTP_SERVER`           | `base+`            | `0.pool.ntp.org`                                          | Any valid NTP server address                                                                   | The NTP server to use for time synchronization.                                                                                  |
+| `LOG_PATHS`            | `base+`            | ``, overridden by `php` base image etc.                   | Space seperated paths.                                                                         | Paths to collect logs from. The paths of files to collect logs from and write them to stdout.                                    |
 
 ## Versions available
 
-| Container | Is Latest | Version     | Alpine      | PHP Version | Node Version | Tag                                   |
-| --------- | --------- | ----------- | ----------- | ----------- | ------------ | ------------------------------------- |
-| Magento   | ️         |             | Alpine 3.22 | PHP 8.4     | Node 22      | ghcr.io/roushtech/docker/magento:8.4  |
-| Magento   | ✔️        |             | Alpine 3.18 | PHP 8.1     | Node 18      | ghcr.io/roushtech/docker/magento:8.1  |
-| PHP+Node  | ️         | PHP 8.4     | Alpine 3.22 | PHP 8.4     | Node 22      | ghcr.io/roushtech/docker/php-node:8.4 |
-| PHP+Node  | ✔️        | PHP 8.1     | Alpine 3.18 | PHP 8.1     | Node 18      | ghcr.io/roushtech/docker/php-node:8.1 |
-| PHP       |           | PHP 8.4     | Alpine 3.21 | PHP 8.4     |              | ghcr.io/roushtech/docker/php-node:8.4 |
-| PHP       |           | PHP 8.1     | Alpine 3.18 | PHP 8.1     |              | ghcr.io/roushtech/docker/php-node:8.1 |
-| PHP       |           | PHP 7.4     | Alpine 3.15 | PHP 7.4     |              | ghcr.io/roushtech/docker/php-node:7.4 |
-| Base      |           | Alpine 3.21 | Alpine 3.21 |             |              | ghcr.io/roushtech/docker/base:3.21    |
-| Base      |           | 3.18        | Alpine 3.18 |             |              | ghcr.io/roushtech/docker/base:3.18    |
-| Base      |           | 3.15        | Alpine 3.15 |             |              | ghcr.io/roushtech/docker/base:3.15    |
+| Container        | Is `:latest` | Version     | Alpine      | Other component versions | Node Version | Tag                                          |
+| ---------------- | ------------ | ----------- | ----------- | ------------------------ | ------------ | -------------------------------------------- |
+| Magento          | ️            |             | Alpine 3.22 | PHP 8.4                  | Node 22      | ghcr.io/roushtech/docker/magento:8.4         |
+| Magento          | ✔️           |             | Alpine 3.18 | PHP 8.1                  | Node 18      | ghcr.io/roushtech/docker/magento:8.1         |
+| PHP+Node         | ️            | PHP 8.4     | Alpine 3.22 | PHP 8.4                  | Node 22      | ghcr.io/roushtech/docker/php-node:8.4        |
+| PHP+Node         | ✔️           | PHP 8.1     | Alpine 3.18 | PHP 8.1                  | Node 18      | ghcr.io/roushtech/docker/php-node:8.1        |
+| PHP              |              | PHP 8.4     | Alpine 3.21 | PHP 8.4                  |              | ghcr.io/roushtech/docker/php-node:8.4        |
+| PHP              |              | PHP 8.1     | Alpine 3.18 | PHP 8.1                  |              | ghcr.io/roushtech/docker/php-node:8.1        |
+| PHP              |              | PHP 7.4     | Alpine 3.15 | PHP 7.4                  |              | ghcr.io/roushtech/docker/php-node:7.4        |
+| Java             | ✔️           | OpenJDK 21  | Alpine 3.22 |                          |              | ghcr.io/roushtech/docker/java:21             |
+| Java             |              | OpenJDK 17  | Alpine 3.22 |                          |              | ghcr.io/roushtech/docker/java:17             |
+| Java             |              | OpenJDK 11  | Alpine 3.22 |                          |              | ghcr.io/roushtech/docker/java:11             |
+| Java             |              | OpenJDK 8   | Alpine 3.22 |                          |              | ghcr.io/roushtech/docker/java:8              |
+| Java War Machine |              | OpenJDK 21  | Alpine 3.22 |                          |              | ghcr.io/roushtech/docker/java:war-machine-21 |
+| Java War Machine |              | OpenJDK 17  | Alpine 3.22 |                          |              | ghcr.io/roushtech/docker/java:war-machine-17 |
+| Java War Machine |              | OpenJDK 11  | Alpine 3.22 |                          |              | ghcr.io/roushtech/docker/java:war-machine-11 |
+| Base             |              | Alpine 3.21 | Alpine 3.21 |                          |              | ghcr.io/roushtech/docker/base:3.21           |
+| Base             |              | 3.18        | Alpine 3.18 |                          |              | ghcr.io/roushtech/docker/base:3.18           |
+| Base             |              | 3.15        | Alpine 3.15 |                          |              | ghcr.io/roushtech/docker/base:3.15           |

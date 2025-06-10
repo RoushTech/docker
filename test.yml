@@ -16,6 +16,20 @@ services:
         condition: service_completed_successfully
       php81-node-assertions:
         condition: service_completed_successfully
+      java-21-war-machine-assertions:
+        condition: service_completed_successfully
+      java-17-war-machine-assertions:
+        condition: service_completed_successfully
+      java-11-war-machine-assertions:
+        condition: service_completed_successfully
+      java-21-assertions:
+        condition: service_completed_successfully
+      java-17-assertions:
+        condition: service_completed_successfully
+      java-11-assertions:
+        condition: service_completed_successfully
+      java-8-assertions:
+        condition: service_completed_successfully
       base-22-assertions:
         condition: service_completed_successfully
       base-21-assertions:
