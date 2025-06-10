@@ -63,6 +63,14 @@ group "magento" {
     "magento-81",
   ]
 }
+group "java" {
+  targets = [
+    "java-21",
+    "java-17",
+    "java-11",
+    "java-8",
+  ]
+}
 target "alpine-22" {
   dockerfile = "Alpine.Dockerfile"
   target     = "alpine-22-base"
@@ -134,6 +142,55 @@ target "builder-21" {
   platforms  = PLATFORMS
   labels = {
     "org.opencontainers.image.description" = "Roushtech-flavoured Alpine Linux base image that has build tools installed"
+  }
+}
+target "java-21" {
+  dockerfile = "Java.Dockerfile"
+  target     = "java-21-base"
+  tags       = [
+    "ghcr.io/roushtech/docker/java:latest",
+    "ghcr.io/roushtech/docker/java:21",
+    "ghcr.io/roushtech/docker/java:21-${TIMESTAMP}",
+  ]
+  platforms  = PLATFORMS
+  labels = {
+    "org.opencontainers.image.description" = "Java JDK 21 base image"
+  }
+}
+target "java-17" {
+  dockerfile = "Java.Dockerfile"
+  target     = "java-17-base"
+  tags       = [
+    "ghcr.io/roushtech/docker/java:17",
+    "ghcr.io/roushtech/docker/java:17-${TIMESTAMP}",
+  ]
+  platforms  = PLATFORMS
+  labels = {
+    "org.opencontainers.image.description" = "Java JDK 11 base image"
+  }
+}
+target "java-11" {
+  dockerfile = "Java.Dockerfile"
+  target     = "java-11-base"
+  tags       = [
+    "ghcr.io/roushtech/docker/java:11",
+    "ghcr.io/roushtech/docker/java:11-${TIMESTAMP}",
+  ]
+  platforms  = PLATFORMS
+  labels = {
+    "org.opencontainers.image.description" = "Java JDK 11 base image"
+  }
+}
+target "java-8" {
+  dockerfile = "Java.Dockerfile"
+  target     = "java-8-base"
+  tags       = [
+    "ghcr.io/roushtech/docker/java:8",
+    "ghcr.io/roushtech/docker/java:8-${TIMESTAMP}",
+  ]
+  platforms  = PLATFORMS
+  labels = {
+    "org.opencontainers.image.description" = "Java JDK 8 base image"
   }
 }
 target "php-84" {
