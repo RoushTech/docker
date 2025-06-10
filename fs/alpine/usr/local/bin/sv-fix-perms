@@ -2,4 +2,7 @@
 DIR="init"
 source /etc/services.d/common.sh
 echo "[$DIR] Fixing runit service permissions ..."
-chmod -f +x /etc/services.d/*/run /etc/services.d/*/finish
+chmod -f +x \
+	/etc/services.d/*/run \
+	/etc/services.d/*/finish \
+	/usr/local/bin/*

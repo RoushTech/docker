@@ -5,10 +5,13 @@ if [ "$(id -u)" != "0" ]; then
 	exit 1
 fi
 
+COLOR_RESET=$(tput sgr0)
+COLOR_GREY=$(tput setaf 8)
+
 # Fixup perms.
 /usr/local/bin/sv-fix-perms
 
-echo "[entrypoint] System Path: $PATH"
+echo "[${COLOR_GREY}entrypoint${COLOR_RESET}] System Path: ${COLOR_GREY}${PATH}${COLOR_RESET}"
 
 ## Set runit to run as the default service manager
 exec runsvdir -P /etc/services.d
