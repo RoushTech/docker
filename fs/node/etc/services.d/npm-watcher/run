@@ -21,7 +21,7 @@ for NPM_PATH in "${WATCH_PATHS[@]}"; do
 	(
 		if [ -d "$NPM_PATH" ]; then
 			echo "Installing dependencies in $NPM_PATH"
-			exec chpst -u php npm --prefix "$NPM_PATH" install
+			exec chpst -u app npm --prefix "$NPM_PATH" install
 		else
 			echo "Directory $NPM_PATH does not exist, skipping npm install."
 		fi
