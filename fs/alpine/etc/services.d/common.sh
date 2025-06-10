@@ -14,7 +14,7 @@ failure() {
 trap 'failure ${LINENO} "$BASH_COMMAND"' ERR
 
 export DIRECTORY="$(dirname "$(readlink -f "$0")")"
-export PROCESS_COLOR=$(basename "$DIRECTORY" | cksum | awk '{print $1%255 + 1}')
+export PROCESS_COLOR=$(basename "$DIRECTORY" | cksum | awk '{print $1%230 + 1}')
 DIR=${DIR:-$(basename "$DIRECTORY")}
 export DIR="$(tput setaf "$PROCESS_COLOR")$DIR$(tput sgr0)"
 
