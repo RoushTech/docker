@@ -1,3 +1,10 @@
+# Generic labels for all derived images
+LABEL org.opencontainers.image.vendor="RoushTech LLC" \
+      org.opencontainers.image.authors="Matthew B <matthew.baggett@roushtech.net>" \
+      org.opencontainers.image.url="https://github.com/RoushTech/docker" \
+      org.opencontainers.image.source="https://github.com/RoushTech/docker" \
+      org.opencontainers.image.documentation="https://github.com/RoushTech/docker/blob/main/README.md"
+
 ARG BASE_PACKAGES="\
     bash bash-completion less \
     git openssh-client ca-certificates \

@@ -13,316 +13,145 @@ variable "TIMESTAMP"{
 }
 group "default" {
   targets = [
-    "alpine-22",
-    "alpine-21",
-    "alpine-18",
-    "alpine-15",
-    "builder-22",
-    "builder-21",
-    "php-74",
-    "php-81",
-    "php-84",
-    "php-81-node",
-    "php-84-node",
-    "magento-81",
-    "magento-84",
-    "java-21",
-    "java-17",
-    "java-11",
-    "java-8",
-    "java-war-machine-21",
-    "java-war-machine-17",
-    "java-war-machine-11",
-  ]
-  labels = {
-    "org.opencontainers.image.url"           = "https://github.com/RoushTech/docker"
-    "org.opencontainers.image.source"        = "https://github.com/RoushTech/docker"
-    "org.opencontainers.image.documentation" = "https://github.com/RoushTech/docker/blob/main/README.md"
-    "org.opencontainers.image.vendor"        = "RoushTech LLC"
-    "org.opencontainers.image.authors"       = "Matthew B <matthew.baggett@roushtech.net>"
-    "org.opencontainers.image.created"       = timestamp()
-  }
-}
-group "alpine" {
-  targets = [
-    "alpine-22",
-    "alpine-21",
-    "alpine-18",
-    "alpine-15",
+    "base",
+    "java", "java-war-machine", "java-tomcat",
+    "php", "magento",
   ]
 }
-group "php" {
-  targets = [
-    "php-84",
-    "php-81",
-    "php-74",
-  ]
-}
-group "php-node" {
-  targets = [
-    "php-84-node",
-    "php-81-node",
-  ]
-}
-group "magento" {
-  targets = [
-    "magento-84",
-    "magento-81",
-  ]
-}
-group "java" {
-  targets = [
-    "java-21",
-    "java-17",
-    "java-11",
-    "java-8",
-    "java-war-machine-21",
-    "java-war-machine-17",
-    "java-war-machine-11",
-  ]
-}
-target "alpine-22" {
+target "base" {
   dockerfile = "Alpine.Dockerfile"
-  target     = "alpine-22-base"
-  tags       = [
-    "ghcr.io/roushtech/docker/base:3.22",
-    "ghcr.io/roushtech/docker/base:3.22-${TIMESTAMP}",
-  ]
+  name = "${variant.variant}-${version.version}"
+  target = "${variant.variant}-${version.version}-base"
+  matrix = {
+    variant = [
+      { variant="alpine",  target="base",    description="Roushtech-flavoured Alpine Linux base image"                                },
+      { variant="builder", target="builder", description="Roushtech-flavoured Alpine Linux base image that has build tools installed" },
+    ]
+    version = [
+      { version=22, latest=true },
+      { version=21 },
+      { version=18 },
+      { version=15 },
+    ]
+  }
+  tags = compact([
+    try(version.latest ? "ghcr.io/roushtech/docker/${variant.target}:latest" : null, null),
+    "ghcr.io/roushtech/docker/${variant.target}:${version.version}",
+    "ghcr.io/roushtech/docker/${variant.target}:${version.version}-${TIMESTAMP}",
+  ])
   platforms  = PLATFORMS
   labels = {
-    "org.opencontainers.image.description" = "Roushtech-flavoured Alpine Linux base image"
+    "org.opencontainers.image.description" = variant.description
   }
 }
-target "alpine-21" {
-  dockerfile = "Alpine.Dockerfile"
-  target     = "alpine-21-base"
-  tags       = [
-    "ghcr.io/roushtech/docker/base:3.21",
-    "ghcr.io/roushtech/docker/base:3.21-${TIMESTAMP}",
-  ]
-  platforms  = PLATFORMS
-  labels = {
-    "org.opencontainers.image.description" = "Roushtech-flavoured Alpine Linux base image"
-  }
-}
-target "alpine-18" {
-  dockerfile = "Alpine.Dockerfile"
-  target     = "alpine-18-base"
-  tags       = [
-    "ghcr.io/roushtech/docker/base:latest",
-    "ghcr.io/roushtech/docker/base:3.18",
-    "ghcr.io/roushtech/docker/base:3.18-${TIMESTAMP}",
-  ]
-  platforms  = PLATFORMS
-    labels = {
-        "org.opencontainers.image.description" = "Roushtech-flavoured Alpine Linux base image"
-    }
-}
-target "alpine-15" {
-  dockerfile = "Alpine.Dockerfile"
-  target     = "alpine-15-base"
-  tags       = [
-    "ghcr.io/roushtech/docker/base:3.15",
-    "ghcr.io/roushtech/docker/base:3.15-${TIMESTAMP}",
-  ]
-  platforms  = PLATFORMS
-    labels = {
-        "org.opencontainers.image.description" = "Roushtech-flavoured Alpine Linux base image"
-    }
-}
-target "builder-22" {
-  dockerfile = "Alpine.Dockerfile"
-  target     = "builder-22-base"
-  tags       = [
-    "ghcr.io/roushtech/docker/builder:3.22",
-    "ghcr.io/roushtech/docker/builder:3.22-${TIMESTAMP}",
-  ]
-  platforms  = PLATFORMS
-  labels = {
-    "org.opencontainers.image.description" = "Roushtech-flavoured Alpine Linux base image that has build tools installed"
-  }
-}
-target "builder-21" {
-  dockerfile = "Alpine.Dockerfile"
-  target     = "builder-21-base"
-  tags       = [
-    "ghcr.io/roushtech/docker/builder:3.21",
-    "ghcr.io/roushtech/docker/builder:3.21-${TIMESTAMP}",
-  ]
-  platforms  = PLATFORMS
-  labels = {
-    "org.opencontainers.image.description" = "Roushtech-flavoured Alpine Linux base image that has build tools installed"
-  }
-}
-target "java-21" {
+target "java" {
   dockerfile = "Java.Dockerfile"
-  target     = "java-21-base"
-  tags       = [
-    "ghcr.io/roushtech/docker/java:latest",
-    "ghcr.io/roushtech/docker/java:21",
-    "ghcr.io/roushtech/docker/java:21-${TIMESTAMP}",
-  ]
+  name = "java-${version.version}"
+  target = "java-${version.version}-base"
+  matrix = {
+    version = [
+      { version=21, latest=true },
+      { version=17 },
+      { version=11 },
+      { version=8 },
+    ]
+  }
+  tags = compact([
+    try(version.latest ? "ghcr.io/roushtech/docker/java:latest" : null, null),
+    "ghcr.io/roushtech/docker/java:${version.version}",
+    "ghcr.io/roushtech/docker/java:${version.version}-${TIMESTAMP}",
+  ])
   platforms  = PLATFORMS
   labels = {
-    "org.opencontainers.image.description" = "Java JDK 21 base image"
+    "org.opencontainers.image.description" = "Java JDK ${version.version} base image"
   }
 }
-target "java-17" {
+target "java-tomcat" {
   dockerfile = "Java.Dockerfile"
-  target     = "java-17-base"
-  tags       = [
-    "ghcr.io/roushtech/docker/java:17",
-    "ghcr.io/roushtech/docker/java:17-${TIMESTAMP}",
-  ]
+  name = "java-tomcat-${version.version}"
+  target = "java-tomcat-${version.version}-base"
+  matrix = {
+    version = [
+      { version=21, latest=true },
+      { version=17 },
+      { version=11 },
+      { version=8 },
+      { version=7 },
+    ]
+  }
+  tags = compact([
+    try(version.latest ? "ghcr.io/roushtech/docker/java:tomcat-latest" : null, null),
+    "ghcr.io/roushtech/docker/java:tomcat-${version.version}",
+    "ghcr.io/roushtech/docker/java:tomcat-${version.version}-${TIMESTAMP}",
+  ])
   platforms  = PLATFORMS
   labels = {
-    "org.opencontainers.image.description" = "Java JDK 11 base image"
+    "org.opencontainers.image.description" = "Java JDK ${version.version} base image"
   }
 }
-target "java-11" {
+target "java-war-machine" {
   dockerfile = "Java.Dockerfile"
-  target     = "java-11-base"
-  tags       = [
-    "ghcr.io/roushtech/docker/java:11",
-    "ghcr.io/roushtech/docker/java:11-${TIMESTAMP}",
-  ]
+  name = "java-war-machine-${version.version}"
+  target = "java-war-machine-${version.version}-base"
+  matrix = {
+    version = [
+      { version=21, latest=true },
+      { version=17 },
+      { version=11 },
+    ]
+  }
+  tags = compact([
+    try(version.latest ? "ghcr.io/roushtech/docker/java:war-machine-latest" : null, null),
+    "ghcr.io/roushtech/docker/java:war-machine-${version.version}",
+    "ghcr.io/roushtech/docker/java:war-machine-${version.version}-${TIMESTAMP}",
+  ])
   platforms  = PLATFORMS
   labels = {
-    "org.opencontainers.image.description" = "Java JDK 11 base image"
+    "org.opencontainers.image.description" = "Java JDK ${version.version} base image that automatically runs WAR files"
   }
 }
-target "java-8" {
-  dockerfile = "Java.Dockerfile"
-  target     = "java-8-base"
-  tags       = [
-    "ghcr.io/roushtech/docker/java:8",
-    "ghcr.io/roushtech/docker/java:8-${TIMESTAMP}",
-  ]
-  platforms  = PLATFORMS
-  labels = {
-    "org.opencontainers.image.description" = "Java JDK 8 base image"
-  }
-}
-target "java-war-machine-21" {
-  dockerfile = "Java.Dockerfile"
-  target     = "java-war-machine-21-base"
-  tags       = [
-    "ghcr.io/roushtech/docker/java:war-machine-21",
-    "ghcr.io/roushtech/docker/java:war-machine-21-${TIMESTAMP}",
-  ]
-  platforms  = PLATFORMS
-  labels = {
-    "org.opencontainers.image.description" = "Java JDK 21 base image that automatically runs WAR files"
-  }
-}
-target "java-war-machine-17" {
-  dockerfile = "Java.Dockerfile"
-  target     = "java-war-machine-17-base"
-  tags       = [
-    "ghcr.io/roushtech/docker/java:war-machine-17",
-    "ghcr.io/roushtech/docker/java:war-machine-17-${TIMESTAMP}",
-  ]
-  platforms  = PLATFORMS
-  labels = {
-    "org.opencontainers.image.description" = "Java JDK 17 base image that automatically runs WAR files"
-  }
-}
-target "java-war-machine-11" {
-  dockerfile = "Java.Dockerfile"
-  target     = "java-war-machine-11-base"
-  tags       = [
-    "ghcr.io/roushtech/docker/java:war-machine-11",
-    "ghcr.io/roushtech/docker/java:war-machine-11-${TIMESTAMP}",
-  ]
-  platforms  = PLATFORMS
-  labels = {
-    "org.opencontainers.image.description" = "Java JDK 11 base image that automatically runs WAR files"
-  }
-}
-target "php-84" {
+target "php" {
   dockerfile = "PHP.Dockerfile"
-  target     = "php-84-base"
-  tags       = [
-    "ghcr.io/roushtech/docker/php:latest",
-    "ghcr.io/roushtech/docker/php:8.4",
-    "ghcr.io/roushtech/docker/php:8.4-${TIMESTAMP}",
-  ]
+  name = "php-${replace(version.version, ".", "")}-${variant.target}"
+  target = "php-${replace(version.version, ".", "")}-${variant.target}"
+  matrix = {
+    version = [
+      { version=8.4, latest=true },
+      { version=8.1 },
+      { version=7.4 },
+    ]
+    variant = [
+      { variant="php",      target="base"     , description="base image" },
+      { variant="php-node", target="node-base", description="base image with Node.js installed" },
+    ]
+  }
+  tags = compact([
+    try(version.latest ? "ghcr.io/roushtech/docker/${variant.variant}:latest" : null, null),
+    "ghcr.io/roushtech/docker/${variant.variant}:${version.version}",
+    "ghcr.io/roushtech/docker/${variant.variant}:${version.version}-${TIMESTAMP}",
+  ])
   platforms  = PLATFORMS
   labels = {
-    "org.opencontainers.image.description" = "PHP 8.4 base image"
+    "org.opencontainers.image.description" = "PHP ${version.version} ${variant.description}"
   }
 }
-target "php-81" {
-  dockerfile = "PHP.Dockerfile"
-  target     = "php-81-base"
-  tags       = [
-    "ghcr.io/roushtech/docker/php:8.1",
-    "ghcr.io/roushtech/docker/php:8.1-${TIMESTAMP}",
-  ]
-  platforms  = PLATFORMS
-    labels = {
-        "org.opencontainers.image.description" = "PHP 8.1 base image"
-    }
-}
-target "php-74" {
-  dockerfile = "PHP.Dockerfile"
-  target     = "php-74-base"
-  tags       = [
-    "ghcr.io/roushtech/docker/php:7.4",
-    "ghcr.io/roushtech/docker/php:7.4-${TIMESTAMP}",
-  ]
-  platforms  = PLATFORMS
-  labels = {
-    "org.opencontainers.image.description" = "PHP 7.4 base image"
-  }
-}
-target "php-84-node" {
-  dockerfile = "PHP.Dockerfile"
-  target     = "php-84-node-base"
-  tags       = [
-    "ghcr.io/roushtech/docker/php-node:8.4",
-    "ghcr.io/roushtech/docker/php-node:8.4-${TIMESTAMP}",
-  ]
-  platforms  = PLATFORMS
-  labels = {
-    "org.opencontainers.image.description" = "PHP 8.4 with Node.js base image"
-  }
-}
-target "php-81-node" {
-  dockerfile = "PHP.Dockerfile"
-  target     = "php-81-node-base"
-  tags       = [
-    "ghcr.io/roushtech/docker/php-node:latest",
-    "ghcr.io/roushtech/docker/php-node:8.1",
-    "ghcr.io/roushtech/docker/php-node:8.1-${TIMESTAMP}",
-  ]
-  platforms  = PLATFORMS
-  labels = {
-    "org.opencontainers.image.description" = "PHP 8.1 with Node.js base image"
-  }
-}
-target "magento-84" {
+target "magento" {
   dockerfile = "Magento.Dockerfile"
-  target     = "magento-84-node-base"
-  tags       = [
-    "ghcr.io/roushtech/docker/magento:8.4",
-    "ghcr.io/roushtech/docker/magento:8.4-${TIMESTAMP}",
-  ]
-  platforms  = PLATFORMS
-  labels = {
-    "org.opencontainers.image.description" = "Magento on PHP 8.4 with Node.js base image"
+  name = "magento-${replace(version.version, ".", "")}"
+  target = "magento-${replace(version.version, ".", "")}-node-base"
+  matrix = {
+    version = [
+      { version = 8.4, latest = true },
+      { version = 8.1 },
+    ]
   }
-}
-target "magento-81" {
-  dockerfile = "Magento.Dockerfile"
-  target     = "magento-81-node-base"
-  tags       = [
-    "ghcr.io/roushtech/docker/magento:latest",
-    "ghcr.io/roushtech/docker/magento:8.1",
-    "ghcr.io/roushtech/docker/magento:8.1-${TIMESTAMP}",
-  ]
+  tags = compact([
+    try(version.latest ? "ghcr.io/roushtech/docker/magento:latest" : null, null),
+    "ghcr.io/roushtech/docker/magento:${version.version}",
+    "ghcr.io/roushtech/docker/magento:${version.version}-${TIMESTAMP}",
+  ])
   platforms  = PLATFORMS
   labels = {
-    "org.opencontainers.image.description" = "Magento on PHP 8.1 with Node.js base image"
+    "org.opencontainers.image.description" = "Magento on PHP ${version.version}"
   }
 }

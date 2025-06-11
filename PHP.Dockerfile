@@ -42,9 +42,6 @@ if ! php --version | grep -q "PHP 8.4"; then
 fi
 PHP_84_FIXUPS
 
-FROM php-84-base AS php-84-node-base
-INCLUDE ./PHP-Node.fragment.Dockerfile
-
 #       ____  __  ______  ____   ___
 #      / __ \/ / / / __ \( __ ) <  /
 #     / /_/ / /_/ / /_/ / __  | / /
@@ -89,9 +86,6 @@ if ! php --version | grep -q "PHP 8.1"; then
 fi
 PHP_81_FIXUPS
 
-FROM php-81-base AS php-81-node-base
-INCLUDE ./PHP-Node.fragment.Dockerfile
-
 #       ____  __  ______  _____ __ __
 #      / __ \/ / / / __ \/__  // // /
 #     / /_/ / /_/ / /_/ /  / // // /_
@@ -132,3 +126,13 @@ if ! php --version | grep -q "PHP 7."; then
   exit 1
 fi
 PHP_7_FIXUPS
+
+
+FROM php-84-base AS php-84-node-base
+INCLUDE ./PHP-Node.fragment.Dockerfile
+
+FROM php-81-base AS php-81-node-base
+INCLUDE ./PHP-Node.fragment.Dockerfile
+
+FROM php-74-base AS php-74-node-base
+INCLUDE ./PHP-Node.fragment.Dockerfile
