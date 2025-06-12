@@ -33,7 +33,9 @@ function runStartupTasks() {
 	fixCachePerms
 }
 
+rm /etc/services.d/magento/done || true
 touch /etc/services.d/magento/starting
+
 fixCachePerms
 if [ $(which magento | wc -l) -eq 0 ]; then
 	rm /etc/services.d/magento/starting
@@ -45,6 +47,6 @@ fi
 echo "[$DIR] Starting Magento"
 runStartupTasks
 echo "[$DIR] Magento startup finished in ${SECONDS} seconds."
+
 rm /etc/services.d/magento/starting
 touch /etc/services.d/magento/done
-exit 0
