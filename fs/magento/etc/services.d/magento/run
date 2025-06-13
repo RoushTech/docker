@@ -22,10 +22,10 @@ function runStartupTasks() {
 	fi
 	echo "[$DIR:DevTasks] There are ${COLOR_YELLOW}${task_count}${COLOR_RESET} development tasks to run"
 	for script in "$TASKSD_DIR"/*.sh; do
-		echo "[$DIR:DevTasks]  > Running $script"
+		echo "[$DIR:DevTasks]  > Running ${COLOR_GREY}${script}${COLOR_RESET}"
 		su -c "bash $script" app
 		if [ $? -ne 0 ]; then
-			echo "[$DIR:DevTasks]  > Error running $script"
+			echo "[$DIR:DevTasks]  > Error running ${COLOR_GREY}${script}${COLOR_RESET}"
 			exit 1
 		fi
 	done
@@ -33,7 +33,7 @@ function runStartupTasks() {
 	fixCachePerms
 }
 
-rm /etc/services.d/magento/done || true
+rm /etc/services.d/magento/done >/dev/null 2>&1 || true
 touch /etc/services.d/magento/starting
 
 fixCachePerms

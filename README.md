@@ -71,9 +71,9 @@ More can be read in the [runit documentation](http://smarden.org/runit) particul
 | Magento          | ✔️           |             | Alpine 3.18 | PHP 8.1                  | Node 18      | ghcr.io/roushtech/docker/magento:8.1         |
 | PHP+Node         | ️            | PHP 8.4     | Alpine 3.22 | PHP 8.4                  | Node 22      | ghcr.io/roushtech/docker/php-node:8.4        |
 | PHP+Node         | ✔️           | PHP 8.1     | Alpine 3.18 | PHP 8.1                  | Node 18      | ghcr.io/roushtech/docker/php-node:8.1        |
-| PHP              |              | PHP 8.4     | Alpine 3.21 | PHP 8.4                  |              | ghcr.io/roushtech/docker/php-node:8.4        |
-| PHP              |              | PHP 8.1     | Alpine 3.18 | PHP 8.1                  |              | ghcr.io/roushtech/docker/php-node:8.1        |
-| PHP              |              | PHP 7.4     | Alpine 3.15 | PHP 7.4                  |              | ghcr.io/roushtech/docker/php-node:7.4        |
+| PHP              |              | PHP 8.4     | Alpine 3.21 | PHP 8.4                  |              | ghcr.io/roushtech/docker/php:8.4             |
+| PHP              |              | PHP 8.1     | Alpine 3.18 | PHP 8.1                  |              | ghcr.io/roushtech/docker/php:8.1             |
+| PHP              |              | PHP 7.4     | Alpine 3.15 | PHP 7.4                  |              | ghcr.io/roushtech/docker/php:7.4             |
 | Java             | ✔️           | OpenJDK 21  | Alpine 3.22 |                          |              | ghcr.io/roushtech/docker/java:21             |
 | Java             |              | OpenJDK 17  | Alpine 3.22 |                          |              | ghcr.io/roushtech/docker/java:17             |
 | Java             |              | OpenJDK 11  | Alpine 3.22 |                          |              | ghcr.io/roushtech/docker/java:11             |
