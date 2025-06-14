@@ -1,72 +1,58 @@
 services:
-  magento-php84-healthchecks:
-    build:
-      dockerfile: Magento.Dockerfile
-      target: magento-84-node-base
-    configs:
-      - source: php_info
-        target: /app/pub/index.php
-    ports:
-      - "4084:80"
-  magento-php81-healthchecks:
-    build:
-      dockerfile: Magento.Dockerfile
-      target: magento-81-node-base
-    configs:
-      - source: php_info
-        target: /app/pub/index.php
-    ports:
-      - "4081:80"
-  php84-node-healthchecks:
-    build:
-      context: .
-      dockerfile: PHP.Dockerfile
-      target: php-84-node-base
-    configs:
-      - source: php_info
-        target: /app/public/index.php
-    ports:
-      - "3184:80"
-  php81-node-healthchecks:
-    build:
-      context: .
-      dockerfile: PHP.Dockerfile
-      target: php-81-node-base
-    configs:
-      - source: php_info
-        target: /app/public/index.php
-    ports:
-      - "3181:80"
-  php84-healthchecks:
-    build:
+  php-84-healthchecks:
+    build: &build-php
       context: .
       dockerfile: PHP.Dockerfile
       target: php-84-base
-    configs:
+    configs: &configs-php
       - source: php_info
         target: /app/public/index.php
     ports:
       - "3084:80"
-  php81-healthchecks:
+  php-81-healthchecks:
     build:
-      context: .
-      dockerfile: PHP.Dockerfile
+      <<: *build-php
       target: php-81-base
-    configs:
-      - source: php_info
-        target: /app/public/index.php
+    configs: *configs-php
     ports:
       - "3081:80"
-  php74-healthchecks:
+  php-74-healthchecks:
     build:
-      context: .
-      dockerfile: PHP.Dockerfile
+      <<: *build-php
       target: php-74-base
-    configs:
-      - source: php_info
-        target: /app/public/index.php
+    configs: *configs-php
     ports:
       - "3074:80"
+  php-84-node-healthchecks:
+    build:
+      <<: *build-php
+      target: php-84-node-base
+    configs: *configs-php
+    ports:
+      - "3184:80"
+  php-81-node-healthchecks:
+    build:
+      <<: *build-php
+      target: php-81-node-base
+    configs: *configs-php
+    ports:
+      - "3181:80"
+  magento-php-84-healthchecks:
+    build: &build-magento
+      dockerfile: Magento.Dockerfile
+      target: magento-84-node-base
+    configs: &configs-magento
+      - source: php_info
+        target: /app/pub/index.php
+    ports:
+      - "4084:80"
+  magento-php-81-healthchecks:
+    build:
+      <<: *build-magento
+      target: magento-81-node-base
+    configs: *configs-magento
+    ports:
+      - "4081:80"
 
 configs:
   php_info:

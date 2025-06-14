@@ -3,7 +3,7 @@ if [[ ${BASH_SOURCE[0]} == "${0}" ]]; then
 	echo "This script is intended to be sourced, not executed directly."
 	exit 1
 fi
-source /etc/services.d/common.sh
+source /usr/local/share/common.sh
 function check_envs() {
 	FAILURE=false
 	if [ -z "$BASE_URL" ]; then

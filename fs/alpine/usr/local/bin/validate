@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+PROCESS_NAME="validate"
+source /usr/local/share/common.sh
+FAILURE=0
+
+# Validate the configuration
+for file in /etc/validate.d/*.sh; do
+	if [ -f "$file" ]; then
+		echo "Running ${COLOR_YELLOW}${file}${COLOR_RESET} ..."
+		if su -c "bash $file" $SYSTEM_USER; then
+			echo "${COLOR_GREEN}Validation passed for ${file}${COLOR_RESET}"
+		else
+			echo "${COLOR_RED}Validation failed for ${file}${COLOR_RESET}"
+			FAILURE=1
+		fi
+	else
+		echo "${COLOR_RED}No validation files found.${COLOR_RESET}"
+		FAILURE=1
+	fi
+done
+if [ $FAILURE -ne 0 ]; then
+	echo "${COLOR_RED}Validation failed. Please check the logs above.${COLOR_RESET}"
+	exit 1
+else
+	echo "${COLOR_GREEN}All validations passed successfully!${COLOR_RESET}"
+fi

@@ -1,9 +1,10 @@
-ENV CATALINA_HOME=/opt/tomcat \
+LABEL net.roushtech.version.tomcat=${TOMCAT_VERSION}
+ENV TOMCAT_VERSION=$TOMCAT_VERSION \
+    CATALINA_HOME=/opt/tomcat \
     CATALINA_BASE=/opt/tomcat \
     PATH="/opt/tomcat/bin:$PATH"
-COPY ./fs/tomcat /
+COPY ./fs/java-tomcat /
 RUN <<CONFIGURE_TOMCAT
-set -x
     # Fix ownership & execution of service scripts
     sv-fix-perms
     # Download and install Apache Tomcat
@@ -22,6 +23,5 @@ set -x
     chown -R app:app $CATALINA_HOME
     chmod +x $CATALINA_HOME/bin/*.sh
 
-    # Verify the installation
-    catalina.sh version
+    /usr/local/bin/validate
 CONFIGURE_TOMCAT

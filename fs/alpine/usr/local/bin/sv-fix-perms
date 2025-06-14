@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
 DIR="init"
-source /etc/services.d/common.sh
+source /usr/local/share/common.sh
 echo "[$DIR] Fixing runit service permissions ..."
 chmod -f +x \
 	/etc/services.d/*/run \
 	/etc/services.d/*/finish \
-	/usr/local/bin/*
+	/usr/local/bin/* \
+	/etc/validate.d/*
+chown -R $SYSTEM_USER:$SYSTEM_USER /home

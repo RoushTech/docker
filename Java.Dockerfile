@@ -19,13 +19,13 @@ INCLUDE ./Java.fragment.Dockerfile
 
 FROM ./Alpine.Dockerfile#alpine-22-base AS java-8-base
 ARG JAVA_PACKAGES="openjdk8 openjdk8-jre-base"
-ARG JAVA_VERSION=8
+ARG JAVA_VERSION=1.8
 ENV JAVA_HOME="/usr/lib/jvm/java-${JAVA_VERSION}-openjdk"
 INCLUDE ./Java.fragment.Dockerfile
 
 FROM ./Alpine.Dockerfile#alpine-18-base AS java-7-base
 ARG JAVA_PACKAGES="openjdk7 openjdk7-jre-base"
-ARG JAVA_VERSION=7
+ARG JAVA_VERSION=1.7
 ENV JAVA_HOME="/usr/lib/jvm/java-1.${JAVA_VERSION}-openjdk"
 INCLUDE ./Java.fragment.Dockerfile
 

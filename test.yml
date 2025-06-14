@@ -8,28 +8,6 @@ services:
     command: ["sleep", "infinity"]
     depends_on:
       # Validation scripts should just exit 0 if the container is happy
-      magento-php84-assertions:
-        condition: service_completed_successfully
-      magento-php81-assertions:
-        condition: service_completed_successfully
-      php84-node-assertions:
-        condition: service_completed_successfully
-      php81-node-assertions:
-        condition: service_completed_successfully
-      java-21-war-machine-assertions:
-        condition: service_completed_successfully
-      java-17-war-machine-assertions:
-        condition: service_completed_successfully
-      java-11-war-machine-assertions:
-        condition: service_completed_successfully
-      java-21-assertions:
-        condition: service_completed_successfully
-      java-17-assertions:
-        condition: service_completed_successfully
-      java-11-assertions:
-        condition: service_completed_successfully
-      java-8-assertions:
-        condition: service_completed_successfully
       base-22-assertions:
         condition: service_completed_successfully
       base-21-assertions:
@@ -39,18 +17,58 @@ services:
       base-15-assertions:
         condition: service_completed_successfully
 
+      # PHP related
+      php-84-assertions:
+        condition: service_completed_successfully
+      php-81-assertions:
+        condition: service_completed_successfully
+      php-74-assertions:
+        condition: service_completed_successfully
+      php-84-node-assertions:
+        condition: service_completed_successfully
+      php-81-node-assertions:
+        condition: service_completed_successfully
+      magento-php-84-assertions:
+        condition: service_completed_successfully
+      magento-php-81-assertions:
+        condition: service_completed_successfully
+
+      # Java related
+      java-21-assertions:
+        condition: service_completed_successfully
+      java-17-assertions:
+        condition: service_completed_successfully
+      java-11-assertions:
+        condition: service_completed_successfully
+      java-8-assertions:
+        condition: service_completed_successfully
+      java-21-war-machine-assertions:
+        condition: service_completed_successfully
+      java-17-war-machine-assertions:
+        condition: service_completed_successfully
+      java-11-war-machine-assertions:
+        condition: service_completed_successfully
+      java-21-tomcat-assertions:
+        condition: service_completed_successfully
+      java-17-tomcat-assertions:
+        condition: service_completed_successfully
+      java-11-tomcat-assertions:
+        condition: service_completed_successfully
+      java-8-tomcat-assertions:
+        condition: service_completed_successfully
+
       # Healthchecks should be healthy.
-      magento-php84-healthchecks:
+      php-84-healthchecks:
         condition: service_healthy
-      magento-php81-healthchecks:
+      php-81-healthchecks:
         condition: service_healthy
-      php84-node-healthchecks:
+      php-74-healthchecks:
         condition: service_healthy
-      php81-node-healthchecks:
+      php-84-node-healthchecks:
         condition: service_healthy
-      php84-healthchecks:
+      php-81-node-healthchecks:
         condition: service_healthy
-      php81-healthchecks:
+      magento-php-84-healthchecks:
         condition: service_healthy
-      php74-healthchecks:
+      magento-php-81-healthchecks:
         condition: service_healthy

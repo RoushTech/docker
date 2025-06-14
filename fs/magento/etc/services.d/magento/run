@@ -2,7 +2,7 @@
 # shellcheck disable=SC2155
 CURRENT_DIR=$(dirname "$(realpath "$0")")
 PROCESS_NAME="magento"
-source $(dirname "$0")/../common.sh
+source /usr/local/share/common.sh
 MAGENTO_MODE=${MAGENTO_MODE:-development}
 TASKSD_DIR="${CURRENT_DIR}/tasks.d"
 SECONDS=0

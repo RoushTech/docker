@@ -3,8 +3,8 @@ LABEL org.opencontainers.image.vendor="RoushTech LLC" \
       org.opencontainers.image.authors="Matthew B <matthew.baggett@roushtech.net>" \
       org.opencontainers.image.url="https://github.com/RoushTech/docker" \
       org.opencontainers.image.source="https://github.com/RoushTech/docker" \
-      org.opencontainers.image.documentation="https://github.com/RoushTech/docker/blob/main/README.md"
-
+      org.opencontainers.image.documentation="https://github.com/RoushTech/docker/blob/main/README.md" \
+      net.roushtech.version.alpine=${ALPINE_VERSION}
 ARG BASE_PACKAGES="\
     bash bash-completion less \
     git openssh-client ca-certificates \
@@ -21,7 +21,8 @@ ENV TERM=xterm-256color \
     SVDIR="/etc/services.d" \
     SVWAIT=5 \
     PAGER="/usr/bin/less" \
-    EDITOR="/usr/bin/nano"
+    EDITOR="/usr/bin/nano" \
+    SYSTEM_USER=app
 
 WORKDIR /app
 
@@ -31,8 +32,8 @@ RUN <<INITIAL_INSTALL
   apk add --no-cache $BASE_PACKAGES
 
   # add our app user
-  adduser -D -u 1000 app -h /home/app -s /bin/bash
-  chown -R app:app /app
+  adduser -D -u 1000 $SYSTEM_USER -h /home -s /bin/bash
+  chown -R $SYSTEM_USER:$SYSTEM_USER /app
 
   # We're about to add the root filesystem and I want to clean house of these runit-related directories before I do so.
   rm -Rf /etc/service /etc/services /etc/services.d \
@@ -43,10 +44,6 @@ SHELL ["/bin/bash", "-ce"]
 
 # Add the root filesystem. Wipe out the services dirs that we don't want, then copy in our fs, and fix perms.
 COPY ./fs/alpine/. /
-RUN <<FIX_PERMS
-  sv-fix-perms
-  chmod +x /usr/local/bin/*
-FIX_PERMS
 
 RUN <<INSTALL_EXTRA_PACKAGES
   # Install lolcat from the edge/testing repo.
@@ -56,15 +53,16 @@ RUN <<INSTALL_EXTRA_PACKAGES
 INSTALL_EXTRA_PACKAGES
 
 # Set bash as the default shell
-SHELL ["/bin/bash", "-ce"]
 STOPSIGNAL SIGHUP
 CMD ["/usr/local/bin/entrypoint"]
 
-RUN <<FIXUP_BASH
-rm /root/.bashrc /root/.profile /home/app/.bashrc /home/app/.profile || true
-ln -s /etc/profile /root/.bashrc
-ln -s /etc/profile /root/.profile
-ln -s /etc/profile /home/app/.bashrc
-ln -s /etc/profile /home/app/.profile
-sed -i 's|/bin/ash|/bin/bash|' /etc/passwd
-FIXUP_BASH
+RUN <<FINALISE
+  rm /root/.bashrc /root/.profile /home/.bashrc /home/.profile >/dev/null 2>&1 || true
+  ln -s /etc/profile /root/.bashrc
+  ln -s /etc/profile /root/.profile
+  ln -s /etc/profile /home/.bashrc
+  ln -s /etc/profile /home/.profile
+  sed -i 's|/bin/ash|/bin/bash|' /etc/passwd
+  sv-fix-perms
+  /usr/local/bin/validate
+FINALISE

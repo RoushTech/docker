@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-source $(dirname "$0")/../common.sh
+source /usr/local/share/common.sh
 (
 	echo "Starting Cron Service in ${COLOR_YELLOW}${PWD}${COLOR_RESET} ..."
 	exec crond -n -P -s

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 PROCESS_COLOR=199
-source /etc/services.d/common.sh
+source /usr/local/share/common.sh
 # if WAR_FILE is not set, we need to detect the only .war file in the directory.
 # If there is more than one, we will exit with an error.
 if [ -z "${WAR_FILE}" ]; then

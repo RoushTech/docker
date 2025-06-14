@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-source $(dirname "$0")/../common.sh
+source /usr/local/share/common.sh
 # runit provides the exit code of the last process in the environment variable $1
 LAST_PROCESS_EXIT_CODE=$1
 MAGENTO_STARTUP_FAILURE_DELAY=${MAGENTO_STARTUP_FAILURE_DELAY:-60}

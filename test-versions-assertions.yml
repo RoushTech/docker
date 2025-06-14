@@ -1,270 +1,143 @@
-configs:
-  test_runner:
-    content: |
-      #!/bin/bash
-      source /etc/services.d/common.sh
-      for script in /app/test_*.sh; do
-        if [ -f "$$script" ]; then
-          echo "Running $$script"
-          bash "$$script"
-          if [ $? -ne 0 ]; then
-            echo "$${COLOR_RED}Test failed: $$script$${COLOR_RESET}"
-            exit 1
-          fi
-        else
-          echo "$${COLOR_RED}No test scripts found.$${COLOR_RESET}"
-          exit 1
-        fi
-      done
-
-  test_alpine:
-    content: |
-      #!/bin/bash
-      source /etc/services.d/common.sh
-      DETECTED_ALPINE_VERSION=$(cat /etc/os-release | grep -E 'VERSION_ID' | cut -d'=' -f2 | tr -d '"' | cut -d'.' -f1-2)
-      EXPECTED_APP_USER_HOME_PATH="/home/app"
-
-      echo -e "Alpine version\n detected: $${COLOR_GREY}$${DETECTED_ALPINE_VERSION}$${COLOR_RESET}\n expected: $${COLOR_GREY}$${EXPECTED_ALPINE_VERSION}$${COLOR_RESET}"
-      if [ "$${DETECTED_ALPINE_VERSION}" != "$${EXPECTED_ALPINE_VERSION}" ]; then
-        echo "Alpine version $${COLOR_GREY}$${DETECTED_ALPINE_VERSION}$${COLOR_RESET} does not match expected version $${COLOR_GREY}$${EXPECTED_ALPINE_VERSION}$${COLOR_RESET}"
-        exit 1 
-      fi
-
-      DETECTED_APP_USER_HOME_PATH=$(cat /etc/passwd | grep app | cut -d':' -f 6)
-      if [ "$${DETECTED_APP_USER_HOME_PATH}" != "$${EXPECTED_APP_USER_HOME_PATH}" ]; then
-        echo "App user home path $${COLOR_GREY}$${DETECTED_APP_USER_HOME_PATH} does not match expected path $${COLOR_GREY}$${EXPECTED_APP_USER_HOME_PATH}$${COLOR_RESET}"
-        exit 1
-      fi
-
-  test_java:
-    content: |
-      #!/bin/bash
-      source /etc/services.d/common.sh
-      DETECTED_JAVA_VERSION=$(java -version 2>&1 | awk -F '"' '/version/ {print $2}' | cut -d'.' -f1)
-      if [ "$${DETECTED_JAVA_VERSION}" = "1" ]; then
-        DETECTED_JAVA_VERSION=$(java -version 2>&1 | awk -F '"' '/version/ {print $2}' | cut -d'.' -f1-2)
-      fi
-      echo -e "Java version\n detected: $${COLOR_GREY}$${DETECTED_JAVA_VERSION}$${COLOR_GREY}\n expected: $${COLOR_GREY}$${EXPECTED_JAVA_VERSION}$${COLOR_RESET}"
-      if [ "$${DETECTED_JAVA_VERSION}" != "$${EXPECTED_JAVA_VERSION}" ]; then
-        echo -e "Java version\n detected: $${DETECTED_JAVA_VERSION}\n expected: $${EXPECTED_JAVA_VERSION}"
-        exit 1
-      fi
-
-  test_java_war_machine:
-    content: |
-      #!/bin/bash
-      source /etc/services.d/common.sh
-      WAR_MACHINE_SERVICE_DIR="/etc/services.d/war-machine"
-
-      echo -n "Checking Java is configured to run $${COLOR_YELLOW}.war$${COLOR_RESET} tasks ... "
-      if [ ! -d "$${WAR_MACHINE_SERVICE_DIR}" ]; then
-          echo "[$$COLOR_RED}FAIL$$COLOR_RESET}]";
-          echo " > War machine service directory $${COLOR_YELLOW}$${WAR_MACHINE_SERVICE_DIR}$${COLOR_RESET}does not exist."
-          exit 1
-      else
-        echo "[$${COLOR_GREEN}DONE$${COLOR_RESET}]"
-      fi
-
-  test_php:
-    content: |
-      #!/bin/bash
-      source /etc/services.d/common.sh
-      DETECTED_PHP_VERSION=$(php --version | head -n 1 | cut -d' ' -f2 | cut -d'.' -f1-2)
-
-      echo -e "PHP version\n detected: $${COLOR_GREY}$${DETECTED_PHP_VERSION}$${COLOR_RESET}\n expected: $${COLOR_GREY}$${EXPECTED_PHP_VERSION}$${COLOR_RESET}"
-      if [ "$${DETECTED_PHP_VERSION}" != "$${EXPECTED_PHP_VERSION}" ]; then
-        echo -e "PHP version\n detected: $${COLOR_GREY}$${DETECTED_PHP_VERSION}$${COLOR_RESET}\n expected: $${COLOR_GREY}$${EXPECTED_PHP_VERSION}$${COLOR_RESET}"
-        exit 1
-      fi
-
-  test_node:
-    content: |
-      #!/bin/bash
-      DETECTED_NODE_VERSION=$(node --version | cut -d'.' -f1 | sed 's/v//')
-      DETECTED_NPM_VERSION=$(npm --version | cut -d'.' -f1)
-
-      echo -e "Node.js version\n detected: $${COLOR_GREY}$${DETECTED_NODE_VERSION}$${COLOR_RESET}\n expected: $${COLOR_GREY}$${EXPECTED_NODE_VERSION}$${COLOR_RESET}"
-      if [ "$${DETECTED_NODE_VERSION}" != "$${EXPECTED_NODE_VERSION}" ]; then
-        echo "Node.js version $${COLOR_GREY}$${DETECTED_NODE_VERSION}$${COLOR_RESET} does not match expected version $${COLOR_GREY}$${EXPECTED_NODE_VERSION}$${COLOR_RESET}"
-        exit 1; 
-      fi
-
-      echo -e "NPM version\n detected: $${COLOR_GREY}$${DETECTED_NPM_VERSION}$${COLOR_RESET}\n expected: $${COLOR_GREY}$${EXPECTED_NPM_VERSION}$${COLOR_RESET}"
-      if [ "$${DETECTED_NPM_VERSION}" != "$${EXPECTED_NPM_VERSION}" ]; then
-        echo "NPM version $${COLOR_GREY}$${DETECTED_NPM_VERSION}$${COLOR_RESET} does not match expected version $${COLOR_GREY}$${EXPECTED_NPM_VERSION}$${COLOR_RESET}"
-        exit 1; 
-      fi
-
 services:
-  magento-php84-assertions:
-    build:
-      dockerfile: Magento.Dockerfile
-      target: magento-84-node-base
-    command: ["bash", "/app/test.sh"]
-    configs: &cnf_node_php_assertions
-      - source: test_node
-        target: /app/test_node.sh
-      - source: test_php
-        target: /app/test_php.sh
-      - source: test_alpine
-        target: /app/test_alpine.sh
-      - source: test_runner
-        target: /app/test.sh
-    environment: &php84_expected
-      EXPECTED_ALPINE_VERSION: "3.22"
-      EXPECTED_PHP_VERSION: "8.4"
-      EXPECTED_NODE_VERSION: "22"
-      EXPECTED_NPM_VERSION: "11"
-  magento-php81-assertions:
-    build:
-      dockerfile: Magento.Dockerfile
-      target: magento-81-node-base
-    command: ["bash", "/app/test.sh"]
-    configs: *cnf_node_php_assertions
-    environment: &php81_expected
-      EXPECTED_ALPINE_VERSION: "3.18"
-      EXPECTED_PHP_VERSION: "8.1"
-      EXPECTED_NODE_VERSION: "18"
-      EXPECTED_NPM_VERSION: "9"
-  php84-node-assertions:
-    build:
-      context: .
-      dockerfile: PHP.Dockerfile
-      target: php-84-node-base
-    command: ["bash", "/app/test.sh"]
-    configs: *cnf_node_php_assertions
-    environment:
-      <<: *php84_expected
-  php81-node-assertions:
-    build:
-      context: .
-      dockerfile: PHP.Dockerfile
-      target: php-81-node-base
-    command: ["bash", "/app/test.sh"]
-    configs: *cnf_node_php_assertions
-    environment:
-      <<: *php81_expected
-  java-21-war-machine-assertions:
-    build:
-      context: .
-      dockerfile: Java.Dockerfile
-      target: java-war-machine-21-base
-    command: ["bash", "/app/test.sh"]
-    environment:
-      EXPECTED_ALPINE_VERSION: "3.22"
-      EXPECTED_JAVA_VERSION: "21"
-    configs: &cnf_java_war_machine
-      - source: test_java_war_machine
-        target: /app/test_java_war_machine.sh
-      - source: test_java
-        target: /app/test_java.sh
-      - source: test_alpine
-        target: /app/test_alpine.sh
-      - source: test_runner
-        target: /app/test.sh
-  java-17-war-machine-assertions:
-    build:
-      context: .
-      dockerfile: Java.Dockerfile
-      target: java-war-machine-17-base
-    command: ["bash", "/app/test.sh"]
-    environment:
-      EXPECTED_ALPINE_VERSION: "3.22"
-      EXPECTED_JAVA_VERSION: "17"
-    configs: *cnf_java_war_machine
-  java-11-war-machine-assertions:
-    build:
-      context: .
-      dockerfile: Java.Dockerfile
-      target: java-war-machine-11-base
-    command: ["bash", "/app/test.sh"]
-    environment:
-      EXPECTED_ALPINE_VERSION: "3.22"
-      EXPECTED_JAVA_VERSION: "11"
-    configs: *cnf_java_war_machine
-  java-21-assertions:
-    build:
-      context: .
-      dockerfile: Java.Dockerfile
-      target: java-21-base
-    command: ["bash", "/app/test.sh"]
-    environment:
-      EXPECTED_ALPINE_VERSION: "3.22"
-      EXPECTED_JAVA_VERSION: "21"
-    configs: &cnf_java_assertions
-      - source: test_java
-        target: /app/test_java.sh
-      - source: test_alpine
-        target: /app/test_alpine.sh
-      - source: test_runner
-        target: /app/test.sh
-  java-17-assertions:
-    build:
-      context: .
-      dockerfile: Java.Dockerfile
-      target: java-17-base
-    command: ["bash", "/app/test.sh"]
-    environment:
-      EXPECTED_ALPINE_VERSION: "3.22"
-      EXPECTED_JAVA_VERSION: "17"
-    configs: *cnf_java_assertions
-  java-11-assertions:
-    build:
-      context: .
-      dockerfile: Java.Dockerfile
-      target: java-11-base
-    command: ["bash", "/app/test.sh"]
-    environment:
-      EXPECTED_ALPINE_VERSION: "3.22"
-      EXPECTED_JAVA_VERSION: "11"
-    configs: *cnf_java_assertions
-  java-8-assertions:
-    build:
-      context: .
-      dockerfile: Java.Dockerfile
-      target: java-8-base
-    command: ["bash", "/app/test.sh"]
-    environment:
-      EXPECTED_ALPINE_VERSION: "3.22"
-      EXPECTED_JAVA_VERSION: "1.8"
-    configs: *cnf_java_assertions
   base-22-assertions:
     build:
       context: .
       dockerfile: Alpine.Dockerfile
       target: alpine-22-base
-    command: ["bash", "/app/test.sh"]
-    environment:
-      EXPECTED_ALPINE_VERSION: "3.22"
-    configs: &cnf_base_assertions
-      - source: test_alpine
-        target: /app/test_alpine.sh
-      - source: test_runner
-        target: /app/test.sh
+    command: ["bash", "/usr/local/bin/validate"]
   base-21-assertions:
     build:
       context: .
       dockerfile: Alpine.Dockerfile
       target: alpine-21-base
-    command: ["bash", "/app/test.sh"]
-    environment:
-      EXPECTED_ALPINE_VERSION: "3.21"
-    configs: *cnf_base_assertions
+    command: ["bash", "/usr/local/bin/validate"]
   base-18-assertions:
     build:
       context: .
       dockerfile: Alpine.Dockerfile
       target: alpine-18-base
-    command: ["bash", "/app/test.sh"]
-    environment:
-      EXPECTED_ALPINE_VERSION: "3.18"
-    configs: *cnf_base_assertions
+    command: ["bash", "/usr/local/bin/validate"]
   base-15-assertions:
     build:
       context: .
       dockerfile: Alpine.Dockerfile
       target: alpine-15-base
-    command: ["bash", "/app/test.sh"]
-    environment:
-      EXPECTED_ALPINE_VERSION: "3.15"
-    configs: *cnf_base_assertions
+    command: ["bash", "/usr/local/bin/validate"]
+
+  # Java inherit from Base
+  java-21-assertions:
+    build:
+      context: .
+      dockerfile: Java.Dockerfile
+      target: java-21-base
+    command: ["bash", "/usr/local/bin/validate"]
+  java-17-assertions:
+    build:
+      context: .
+      dockerfile: Java.Dockerfile
+      target: java-17-base
+    command: ["bash", "/usr/local/bin/validate"]
+  java-11-assertions:
+    build:
+      context: .
+      dockerfile: Java.Dockerfile
+      target: java-11-base
+    command: ["bash", "/usr/local/bin/validate"]
+  java-8-assertions:
+    build:
+      context: .
+      dockerfile: Java.Dockerfile
+      target: java-8-base
+    command: ["bash", "/usr/local/bin/validate"]
+
+  # Java War Machine inherit from Base+Java
+  java-21-war-machine-assertions:
+    build:
+      context: .
+      dockerfile: Java.Dockerfile
+      target: java-war-machine-21-base
+    command: ["bash", "/usr/local/bin/validate"]
+  java-17-war-machine-assertions:
+    build:
+      context: .
+      dockerfile: Java.Dockerfile
+      target: java-war-machine-17-base
+    command: ["bash", "/usr/local/bin/validate"]
+  java-11-war-machine-assertions:
+    build:
+      context: .
+      dockerfile: Java.Dockerfile
+      target: java-war-machine-11-base
+    command: ["bash", "/usr/local/bin/validate"]
+
+  # Java Tomcat inherit from Base+Java
+  java-21-tomcat-assertions:
+    build:
+      context: .
+      dockerfile: Java.Dockerfile
+      target: java-tomcat-21-base
+    command: ["bash", "/usr/local/bin/validate"]
+  java-17-tomcat-assertions:
+    build:
+      context: .
+      dockerfile: Java.Dockerfile
+      target: java-tomcat-17-base
+    command: ["bash", "/usr/local/bin/validate"]
+  java-11-tomcat-assertions:
+    build:
+      context: .
+      dockerfile: Java.Dockerfile
+      target: java-tomcat-11-base
+    command: ["bash", "/usr/local/bin/validate"]
+  java-8-tomcat-assertions:
+    build:
+      context: .
+      dockerfile: Java.Dockerfile
+      target: java-tomcat-8-base
+    command: ["bash", "/usr/local/bin/validate"]
+
+  # PHP inherit from Base
+  php-84-assertions:
+    build:
+      context: .
+      dockerfile: PHP.Dockerfile
+      target: php-84-base
+    command: ["bash", "/usr/local/bin/validate"]
+  php-81-assertions:
+    build:
+      context: .
+      dockerfile: PHP.Dockerfile
+      target: php-81-base
+    command: ["bash", "/usr/local/bin/validate"]
+  php-74-assertions:
+    build:
+      context: .
+      dockerfile: PHP.Dockerfile
+      target: php-74-base
+    command: ["bash", "/usr/local/bin/validate"]
+
+  # PHP+Node inherit from Base+PHP
+  php-84-node-assertions:
+    build:
+      context: .
+      dockerfile: PHP.Dockerfile
+      target: php-84-node-base
+    command: ["bash", "/usr/local/bin/validate"]
+  php-81-node-assertions:
+    build:
+      context: .
+      dockerfile: PHP.Dockerfile
+      target: php-81-node-base
+    command: ["bash", "/usr/local/bin/validate"]
+
+  # Magento inherit from Base+PHP+Node
+  magento-php-84-assertions:
+    build:
+      dockerfile: Magento.Dockerfile
+      target: magento-84-node-base
+    command: ["bash", "/usr/local/bin/validate"]
+  magento-php-81-assertions:
+    build:
+      dockerfile: Magento.Dockerfile
+      target: magento-81-node-base
+    command: ["bash", "/usr/local/bin/validate"]

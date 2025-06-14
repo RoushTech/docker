@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-source $(dirname "$0")/../common.sh
+source /usr/local/share/common.sh
 
 # MB: I am fully aware that this is dis-gust-tang. I hang my head in shame.
 (

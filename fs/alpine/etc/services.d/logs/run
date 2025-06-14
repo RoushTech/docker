@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-source $(dirname "$0")/../common.sh
+source /usr/local/share/common.sh
 
 echo "[$DIR] Reading logs from ${COLOR_GREY}\$LOG_PATHS${COLOR_RESET}"
 # for each file in $LOG_PATHS seperated by spaces, make an array list and append it if it exists

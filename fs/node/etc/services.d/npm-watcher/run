@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-source $(dirname "$0")/../common.sh
+source /usr/local/share/common.sh
 
 # Split the space-seperated list of paths into an array from NPM_WATCH_PATHS
 if [ -z "$NPM_WATCH_PATHS" ]; then

@@ -1,16 +1,12 @@
+LABEL net.roushtech.version.java=${JAVA_VERSION}
 ENV PATH="${JAVA_HOME}/bin:${PATH}" \
+    JAVA_VERSION=${JAVA_VERSION} \
     JAVA_OPTS=""
-
+COPY ./fs/java/. /
 RUN <<INSTALL_JAVA
+  sv-fix-perms
   # Install our packages
   apk add --no-cache $JAVA_PACKAGES
 
-  # Verify the PATH we set is sane
-  if [ ! -d "$JAVA_HOME" ]; then
-    echo "Java installation failed, $JAVA_HOME does not exist"
-    exit 1;
-  fi
-
-  # validate that java is installed and working
-  java -version
+  /usr/local/bin/validate
 INSTALL_JAVA

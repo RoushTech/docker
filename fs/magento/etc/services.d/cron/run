@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-source $(dirname "$0")/../common.sh
+source /usr/local/share/common.sh
 (
 	# wait until /etc/services.d/magento/done exists
 	if [ ! -f /etc/services.d/magento/done ]; then
