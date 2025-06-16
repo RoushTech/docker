@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC2155
 CURRENT_DIR=$(dirname "$(realpath "$0")")
-PROCESS_NAME="magento"
+PROCESS_NAME="tasks.d"
 source /usr/local/share/common.sh
 MAGENTO_MODE=${MAGENTO_MODE:-development}
 TASKSD_DIR="${CURRENT_DIR}/tasks.d"
@@ -17,15 +17,15 @@ function runStartupTasks() {
 	fi
 	local task_count=$(find "$TASKSD_DIR" -maxdepth 1 -type f -name '*.sh' | wc -l)
 	if [ "$task_count" -eq 0 ]; then
-		echo "[$DIR:DevTasks] No development tasks found in ${COLOR_YELLOW}${TASKSD_DIR}${COLOR_RESET}, skipping."
+		echo "[$DIR] No development tasks found in ${COLOR_YELLOW}${TASKSD_DIR}${COLOR_RESET}, skipping."
 		exit 0
 	fi
-	echo "[$DIR:DevTasks] There are ${COLOR_YELLOW}${task_count}${COLOR_RESET} development tasks to run"
+	echo "[$DIR] There are ${COLOR_YELLOW}${task_count}${COLOR_RESET} development tasks to run"
 	for script in "$TASKSD_DIR"/*.sh; do
-		echo "[$DIR:DevTasks]  > Running ${COLOR_GREY}${script}${COLOR_RESET}"
+		echo "[$DIR]  > Running ${COLOR_GREY}${script}${COLOR_RESET}"
 		su -c "bash $script" app
 		if [ $? -ne 0 ]; then
-			echo "[$DIR:DevTasks]  > Error running ${COLOR_GREY}${script}${COLOR_RESET}"
+			echo "[$DIR]  > Error running ${COLOR_GREY}${script}${COLOR_RESET}"
 			exit 1
 		fi
 	done
@@ -46,7 +46,7 @@ if [ $(which magento | wc -l) -eq 0 ]; then
 fi
 echo "[$DIR] Starting Magento"
 runStartupTasks
-echo "[$DIR] Magento startup finished in ${SECONDS} seconds."
+echo "[$DIR] Magento startup finished in ${COLOR_GREEN}${SECONDS}${COLOR_RESET} seconds."
 
 rm /etc/services.d/magento/starting
 touch /etc/services.d/magento/done
