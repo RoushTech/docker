@@ -2,7 +2,7 @@
 set -eu
 source /usr/local/share/common.sh
 
-DETECTED_COMPOSER_VERSION=$(composer --version 2>/dev/null | grep -Eo 'Composer version [0-9]+\.[0-9]+\.[0-9]+' | cut -d' ' -f3)
+DETECTED_COMPOSER_VERSION=$(composer --version 2>/dev/null | cut -f3 -d' ')
 
 echo -e "Composer version\n detected: ${COLOR_GREY}${DETECTED_COMPOSER_VERSION}${COLOR_RESET}\n expected: ${COLOR_GREY}${COMPOSER_VERSION}${COLOR_RESET}"
 if [ "${COMPOSER_VERSION}" = "latest-stable" ]; then
