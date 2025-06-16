@@ -17,6 +17,6 @@ RUN <<FIX_ENVIRONMENT
   sed -i 's|root .*|root /app/pub;|g' /etc/nginx/http.d/default.conf
   # Set the default memory limit to 256M
   sed -i 's|memory_limit = .*|memory_limit = 256M|g' /etc/php/php.ini
-
+  # Run the validate script to ensure this container isn't built incorrectly
   /usr/local/bin/validate
 FIX_ENVIRONMENT
