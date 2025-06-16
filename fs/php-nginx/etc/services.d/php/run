@@ -42,8 +42,6 @@ source /usr/local/share/common.sh
 		rm -f /etc/php/conf.d/*_xdebug.ini
 	else
 		echo "Xdebug is ${COLOR_RED}enabled${COLOR_RESET}. You can disable it by setting ${COLOR_YELLOW}PHP_ENABLE_XDEBUG=Off${COLOR_RESET}."
-		echo " xdebug.ini:"
-		cat /etc/php/conf.d/*_xdebug.ini
 	fi
 
 	env | sed "s/\(.*\)=\(.*\)/env[\1]='\2'/" >/etc/php/conf.d/env.conf
