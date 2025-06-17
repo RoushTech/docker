@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 source /usr/local/share/common.sh
 (
+	CRON_INTERVAL_SECONDS=300 # Default cron interval in seconds
 	# wait until /etc/services.d/magento/done exists
 	if [ ! -f /etc/services.d/magento/done ]; then
 		echo "Waiting for Magento to be ready ..."
@@ -23,8 +24,8 @@ source /usr/local/share/common.sh
 			flock -s 200
 			chpst -u app magento cron:run
 		) 200>/var/run/magento-cron.lock || {
-			echo "[$DIR] Magento cron failed to run, retrying in 60 seconds."
+			echo "[$DIR] Magento cron failed to run, retrying in $CRON_INTERVAL_SECONDS seconds."
 		}
-		sleep 60
+		sleep $CRON_INTERVAL_SECONDS
 	done
 ) 2>&1 | (while IFS= read -r; do echo "${COLOR_RESET}[${DIR}] $REPLY"; done)
