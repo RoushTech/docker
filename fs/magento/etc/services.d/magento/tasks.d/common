@@ -10,20 +10,20 @@ function check_envs() {
 		echo "${COLOR_RED}Error: BASE_URL is not set.${COLOR_RESET}"
 		FAILURE=true
 	fi
-	if [ -z "$MYSQL_HOST" ]; then
-		echo "${COLOR_RED}Error: MYSQL_HOST is not set.${COLOR_RESET}"
+	if [ -z "$DB_HOST" ]; then
+		echo "${COLOR_RED}Error: DB_HOST is not set.${COLOR_RESET}"
 		FAILURE=true
 	fi
-	if [ -z "$MYSQL_DATABASE" ]; then
-		echo "${COLOR_RED}Error: MYSQL_DATABASE is not set.${COLOR_RESET}"
+	if [ -z "$DB_DATABASE" ]; then
+		echo "${COLOR_RED}Error: DB_DATABASE is not set.${COLOR_RESET}"
 		FAILURE=true
 	fi
-	if [ -z "$MYSQL_USER" ]; then
-		echo "${COLOR_RED}Error: MYSQL_USER is not set.${COLOR_RESET}"
+	if [ -z "$DB_USER" ]; then
+		echo "${COLOR_RED}Error: DB_USER is not set.${COLOR_RESET}"
 		FAILURE=true
 	fi
-	if [ -z "$MYSQL_PASSWORD" ]; then
-		echo "${COLOR_RED}Error: MYSQL_PASSWORD is not set.${COLOR_RESET}"
+	if [ -z "$DB_PASSWORD" ]; then
+		echo "${COLOR_RED}Error: DB_PASSWORD is not set.${COLOR_RESET}"
 		FAILURE=true
 	fi
 	if [ -z "$ADMIN_FIRSTNAME" ]; then

@@ -7,6 +7,6 @@ Matt's wants and TODO list
 - [ ] I'd quite like it if I could enable a DEVELOPER_MODE inside the containers so that sudo is present for when devs are spelunking around
 - [x] Move dockerfile fragments around.
 - [ ] PS1 terminal prompt needs a color reset at its begining
-- [ ] Rework docker-bake to use matrixes to improve DRY.
-- [ ] Fix magento cron
+- [x] Rework docker-bake to use matrixes to improve DRY.
+- [x] Fix magento cron
 - [x] Make root shell a different color
