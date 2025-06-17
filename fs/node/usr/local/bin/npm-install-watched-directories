@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+# NPM_WATCH_PATHS is a space-separated list of directories
+if [ -z "$NPM_WATCH_PATHS" ]; then
+	echo "NPM_WATCH_PATHS is not set, exiting."
+	exit 0
+fi
+for path in $NPM_WATCH_PATHS; do
+	if [ -d "$path" ]; then
+		echo "Running npm install in $path"
+		(cd "$path" && npm install) &
+	else
+		echo "Directory $path does not exist, skipping."
+	fi
+done
+wait
+echo "All npm installs completed."
+
+for path in $NPM_WATCH_PATHS; do
+	if [ -d "$path" ]; then
+		echo "Running npm run build-dev in $path"
+		(cd "$path" && npm run build-dev) &
+	else
+		echo "Directory $path does not exist, skipping."
+	fi
+done
