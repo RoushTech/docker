@@ -6,10 +6,11 @@ LABEL org.opencontainers.image.vendor="RoushTech LLC" \
       org.opencontainers.image.documentation="https://github.com/RoushTech/docker/blob/main/README.md" \
       net.roushtech.version.alpine=${ALPINE_VERSION}
 ARG BASE_PACKAGES="\
-    bash bash-completion less \
+    bash bash-completion \
+    less util-linux-misc util-linux-bash-completion \
     git openssh-client ca-certificates \
     wget curl \
-    cronie \
+    cronie flock \
     nano vim \
     figlet ncurses \
     runuser runit \

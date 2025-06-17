@@ -19,7 +19,12 @@ source /usr/local/share/common.sh
 
 	# Start running cron
 	while true; do
-		chpst -u app magento cron:run
+		(
+			flock -s 200
+			chpst -u app magento cron:run
+		) 200>/var/run/magento-cron.lock || {
+			echo "[$DIR] Magento cron failed to run, retrying in 60 seconds."
+		}
 		sleep 60
 	done
 ) 2>&1 | (while IFS= read -r; do echo "${COLOR_RESET}[${DIR}] $REPLY"; done)

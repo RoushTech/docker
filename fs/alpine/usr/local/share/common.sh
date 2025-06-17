@@ -11,6 +11,7 @@ export DIR
 export COLOR_RESET=$(tput sgr0)
 export COLOR_GREEN=$(tput setaf 2)
 export COLOR_RED=$(tput setaf 9)
+export COLOR_BLUE=$(tput setaf 4)
 export COLOR_YELLOW=$(tput setaf 3)
 export COLOR_GREY=$(tput setaf 8)
 
