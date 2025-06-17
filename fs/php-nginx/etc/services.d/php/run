@@ -44,6 +44,22 @@ source /usr/local/share/common.sh
 		echo "Xdebug is ${COLOR_RED}enabled${COLOR_RESET}. You can disable it by setting ${COLOR_YELLOW}PHP_ENABLE_XDEBUG=Off${COLOR_RESET}."
 	fi
 
+	# Allow tuning php-fpm settings via environment variables
+	# e.g setting pm.max_children with PHP_FPM_PM_MAX_CHILDREN=10
+	for var in $(env | grep '^PHP_FPM_' | cut -d= -f1); do
+		# Remove the prefix "PHP_FPM_" from the variable name
+		fpm_var_name=$(echo "$var" | sed 's/^PHP_FPM_//')
+		# lowercase
+		fpm_var_name=$(echo "$fpm_var_name" | tr '[:upper:]' '[:lower:]')
+		# replace "PM_" with "pm."
+		fpm_var_name=$(echo "$fpm_var_name" | sed 's|^pm_|pm.|')
+
+		# Set the variable in the php-fpm configuration
+		echo "Setting PHP-FPM variable ${COLOR_YELLOW}${fpm_var_name}${COLOR_RESET} to ${COLOR_YELLOW}${!var}${COLOR_RESET} because ${COLOR_YELLOW}${var}${COLOR_RESET} was set."
+		sed -i "s/^\(${fpm_var_name}\s*=\s*\).*/\1${!var}/" /etc/php/php-fpm.d/www.conf
+	done
+	#cat /etc/php/php-fpm.d/www.conf
+
 	env | sed "s/\(.*\)=\(.*\)/env[\1]='\2'/" >/etc/php/conf.d/env.conf
 
 	php-fpm -F \

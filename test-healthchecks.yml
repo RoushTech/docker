@@ -53,6 +53,20 @@ services:
     configs: *configs-magento
     ports:
       - "4081:80"
+    environment:
+      PHP_ENABLE_XDEBUG: "off"
+      PHP_FPM_PM_MAX_CHILDREN: 4
+      PHP_FPM_PM_START_SERVERS: 1
+      PHP_FPM_PM_MIN_SPARE_SERVERS: 1
+      PHP_FPM_PM_MAX_SPARE_SERVERS: 1
+    develop:
+      watch:
+        - action: sync+restart
+          path: fs/php-nginx/etc/services.d/php/run
+          target: /etc/services.d/php/run
+        - action: sync+exec
+          path: fs/php-nginx/etc/services.d/nginx/run
+          target: /etc/services.d/nginx/run
 
 configs:
   php_info:
