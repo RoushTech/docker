@@ -2,6 +2,9 @@
 source /usr/local/share/common.sh
 DETECTED_ALPINE_VERSION=$(cat /etc/os-release | grep -E 'VERSION_ID' | cut -d'=' -f2 | tr -d '"' | cut -d'.' -f1-2)
 EXPECTED_APP_USER_HOME_PATH="/home"
+EXPECTED_EXECUTABLES=(
+	"stat" "mkdir" "rmdir" # Needed by docker compose watch
+)
 FAILURE=0
 
 echo -e "Alpine version\n detected: ${COLOR_GREY}${DETECTED_ALPINE_VERSION}${COLOR_RESET}\n expected: ${COLOR_GREY}${ALPINE_VERSION}${COLOR_RESET}"
@@ -20,5 +23,12 @@ if [ "$SYSTEM_USER" != "app" ]; then
 	echo "System user should be 'app', but is '${SYSTEM_USER}'"
 	FAILURE=1
 fi
+
+for executable in "${EXPECTED_EXECUTABLES[@]}"; do
+	if ! command -v "$executable" &>/dev/null; then
+		echo "Executable ${COLOR_GREY}${executable}${COLOR_RESET} is not found in the system"
+		FAILURE=1
+	fi
+done
 
 exit $FAILURE
