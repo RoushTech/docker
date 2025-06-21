@@ -9,7 +9,7 @@ source /usr/local/share/common.sh
 			sleep 1
 		done
 	fi
-	echo "Magento is ready, starting cron."
+	echo "Magento is ready, starting cron. Running every ${COLOR_YELLOW}${MAGENTO_CRON_INTERVAL_SECONDS}${COLOR_RESET} seconds."
 
 	# Run once first to populate cron lists. If it fails, disable cron.
 	if ! chpst -u app magento cron:run --group "${MAGENTO_CRON_GROUP:-"default"}"; then
