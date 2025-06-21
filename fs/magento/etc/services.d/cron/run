@@ -9,7 +9,7 @@ source /usr/local/share/common.sh
 			sleep 1
 		done
 	fi
-	echo "Magento is ready, starting cron. Running every ${COLOR_YELLOW}${MAGENTO_CRON_INTERVAL_SECONDS}${COLOR_RESET} seconds."
+	echo "Magento is ready, starting cron. Running every ${COLOR_YELLOW}${MAGENTO_CRON_INTERVAL_SECONDS} seconds${COLOR_RESET}."
 
 	# Run once first to populate cron lists. If it fails, disable cron.
 	if ! chpst -u app magento cron:run --group "${MAGENTO_CRON_GROUP:-"default"}"; then
@@ -24,9 +24,9 @@ source /usr/local/share/common.sh
 			flock -s 200
 			START_SECONDS=$SECONDS
 			chpst -u app magento cron:run --group "${MAGENTO_CRON_GROUP:-"default"}"
-			echo "Magento cron completed in $((SECONDS - START_SECONDS)) seconds. Waiting ${MAGENTO_CRON_INTERVAL_SECONDS} seconds before next run."
+			echo "Magento cron completed in ${COLOR_YELLOW}$((SECONDS - START_SECONDS)) seconds${COLOR_RESET}. Waiting ${COLOR_YELLOW}${MAGENTO_CRON_INTERVAL_SECONDS} seconds${COLOR_RESET} before next run."
 		) 200>/var/run/magento-cron.lock || {
-			echo "Magento cron failed to run, retrying in ${MAGENTO_CRON_INTERVAL_SECONDS} seconds."
+			echo "Magento cron failed to run, retrying in ${COLOR_YELLOW}${MAGENTO_CRON_INTERVAL_SECONDS} seconds${COLOR_RESET}."
 		}
 		sleep $MAGENTO_CRON_INTERVAL_SECONDS
 	done
