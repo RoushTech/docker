@@ -75,5 +75,5 @@ INCLUDE ./PHP-Node.fragment.Dockerfile
 FROM php-74-base AS php-74-node-base
 ARG NODE_VERSION=16
 ARG YARN_VERSION=1.22
-ARG NPM_VERSION=6
+ARG NPM_VERSION=8
 INCLUDE ./PHP-Node.fragment.Dockerfile
