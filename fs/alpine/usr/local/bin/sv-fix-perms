@@ -2,10 +2,9 @@
 DIR="init"
 source /usr/local/share/common.sh
 echo "[$DIR] Fixing runit service permissions ..."
-chmod -f +x \
+chmod +x -c \
 	/etc/services.d/*/run \
 	/etc/services.d/*/finish \
 	/usr/local/bin/* \
-	/etc/validate.d/* \
-	>/dev/null 2>&1 || true
-chown -R $SYSTEM_USER:$SYSTEM_USER /home
+	/etc/validate.d/* ||
+	true

@@ -137,21 +137,21 @@ target "php" {
 }
 target "magento" {
   dockerfile = "Magento.Dockerfile"
-  name = "magento-${replace(version.version, ".", "")}"
-  target = "magento-${replace(version.version, ".", "")}-node-base"
+  name = "magento-${replace(version.php_version, ".", "")}"
+  target = "magento-${replace(version.php_version, ".", "")}-node-base"
   matrix = {
     version = [
-      { version = 8.4, latest = true },
-      { version = 8.1 },
+      { php_version = 8.4, latest = true },
+      { php_version = 8.1 },
     ]
   }
   tags = compact([
     try(version.latest ? "ghcr.io/roushtech/docker/magento:latest" : null, null),
-    "ghcr.io/roushtech/docker/magento:${version.version}",
-    "ghcr.io/roushtech/docker/magento:${version.version}-${TIMESTAMP}",
+    "ghcr.io/roushtech/docker/magento:${version.php_version}",
+    "ghcr.io/roushtech/docker/magento:${version.php_version}-${TIMESTAMP}",
   ])
   platforms  = PLATFORMS
   labels = {
-    "org.opencontainers.image.description" = "Magento on PHP ${version.version}"
+    "org.opencontainers.image.description" = "Magento on PHP ${version.php_version}"
   }
 }

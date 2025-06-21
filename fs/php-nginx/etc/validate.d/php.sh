@@ -26,3 +26,20 @@ if [ "${MODULE_CHECK}" = false ]; then
 else
 	echo -e " PHP modules check passed: ${COLOR_GREEN}OK${COLOR_RESET}"
 fi
+
+if [ -d /var/log/php ]; then
+	echo "Directory /var/log/php should not exist"
+	exit 1
+fi
+if [ -f /var/log/php_error.log ]; then
+	echo "File /var/log/php_error.log exists"
+else
+	echo "File /var/log/php_error.log does not exist"
+	exit 1
+fi
+if [ -f /var/log/php_access.log ]; then
+	echo "File /var/log/php_access.log exists"
+else
+	echo "File /var/log/php_access.log does not exist"
+	exit 1
+fi

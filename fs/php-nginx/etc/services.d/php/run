@@ -12,28 +12,26 @@ source /usr/local/share/common.sh
 		sed -i "s/memory_limit = .*/memory_limit = ${PHP_CLI_MEMORY_LIMIT}/" /etc/php/php-cli.ini
 	fi
 
-	if [ "${PHP_DEBUG_MODE-}" = "on" ]; then
-		echo "Debug mode is enabled. You can override this by setting ${COLOR_YELLOW}PHP_DEBUG_MODE${COLOR_RESET} to off. Setting PHP error reporting to E_ALL and enabling DISPLAY_ERRORS."
-		PHP_ERROR_REPORTING="E_ALL"
-		PHP_DISPLAY_ERRORS="On"
-		PHP_ENABLE_XDEBUG="${PHP_ENABLE_XDEBUG:-On}"
-	else
-		echo "Debug mode is disabled. You can override this by setting ${COLOR_YELLOW}PHP_DEBUG_MODE${COLOR_RESET} to on. Setting PHP error reporting to E_ERROR and disabling DISPLAY_ERRORS"
-		PHP_ERROR_REPORTING="E_ERROR"
-		PHP_DISPLAY_ERRORS="Off"
-		PHP_ENABLE_XDEBUG="${PHP_ENABLE_XDEBUG:-Off}"
-	fi
-
 	# if PHP_ERROR_REPORTING is set, set it in the php.ini
-	if [ -z "${PHP_ERROR_REPORTING}" ]; then
-		echo "Setting PHP error reporting to ${PHP_ERROR_REPORTING}. You can override this with the ${COLOR_YELLOW}PHP_ERROR_REPORTING${COLOR_RESET} environment variable."
-		sed -i "s/error_reporting = .*/error_reporting = ${PHP_ERROR_REPORTING}/" /etc/php/php.ini
+	if [ -n "${PHP_ERROR_REPORTING}" ]; then
+		echo "Setting PHP ${COLOR_YELLOW}error_reporting${COLOR_RESET} to ${COLOR_YELLOW}${PHP_ERROR_REPORTING}${COLOR_RESET}. You can override this with the ${COLOR_YELLOW}PHP_ERROR_REPORTING${COLOR_RESET} environment variable."
 	fi
 
 	# if PHP_DISPLAY_ERRORS is set, set it in the php.ini
-	if [ -z "${PHP_DISPLAY_ERRORS}" ]; then
-		echo "Setting PHP display errors to ${PHP_DISPLAY_ERRORS}. You can override this with the ${COLOR_YELLOW}PHP_DISPLAY_ERRORS${COLOR_RESET} environment variable."
-		sed -i "s/display_errors = .*/display_errors = ${PHP_DISPLAY_ERRORS}/" /etc/php/php.ini
+	if [ -n "${PHP_DISPLAY_ERRORS}" ]; then
+		echo "Setting PHP ${COLOR_YELLOW}display_errors${COLOR_RESET} to ${COLOR_YELLOW}${PHP_DISPLAY_ERRORS}${COLOR_RESET}. You can override this with the ${COLOR_YELLOW}PHP_DISPLAY_ERRORS${COLOR_RESET} environment variable."
+	fi
+
+	if [ "${PHP_DEBUG_MODE-}" = "on" ]; then
+		echo "Debug mode is enabled. You can override this by setting ${COLOR_YELLOW}PHP_DEBUG_MODE${COLOR_RESET} to off. Setting PHP error reporting to E_ALL and enabling DISPLAY_ERRORS."
+		PHP_ERROR_REPORTING="${PHP_ERROR_REPORTING:-E_ALL}"
+		PHP_DISPLAY_ERRORS="${PHP_DISPLAY_ERRORS:-On}"
+		PHP_ENABLE_XDEBUG="${PHP_ENABLE_XDEBUG:-On}"
+	else
+		echo "Debug mode is disabled. You can override this by setting ${COLOR_YELLOW}PHP_DEBUG_MODE${COLOR_RESET} to on. Setting PHP error reporting to E_ERROR and disabling DISPLAY_ERRORS"
+		PHP_ERROR_REPORTING="${PHP_ERROR_REPORTING:-E_ERROR}"
+		PHP_DISPLAY_ERRORS="${PHP_DISPLAY_ERRORS:-Off}"
+		PHP_ENABLE_XDEBUG="${PHP_ENABLE_XDEBUG:-Off}"
 	fi
 
 	# if PHP_ENABLE_XDEBUG is "off" or "Off", remove xdebug configuration
@@ -58,7 +56,11 @@ source /usr/local/share/common.sh
 		echo "Setting PHP-FPM variable ${COLOR_YELLOW}${fpm_var_name}${COLOR_RESET} to ${COLOR_YELLOW}${!var}${COLOR_RESET} because ${COLOR_YELLOW}${var}${COLOR_RESET} was set."
 		sed -i "s/^\(${fpm_var_name}\s*=\s*\).*/\1${!var}/" /etc/php/php-fpm.d/www.conf
 	done
-	#cat /etc/php/php-fpm.d/www.conf
+
+	echo "PHP_ERROR_REPORTING is ${COLOR_YELLOW}${PHP_ERROR_REPORTING}${COLOR_RESET}"
+
+	sed -i "s/error_reporting = .*/error_reporting = ${PHP_ERROR_REPORTING}/" /etc/php/php.ini
+	sed -i "s/display_errors = .*/display_errors = ${PHP_DISPLAY_ERRORS}/" /etc/php/php.ini
 
 	env | sed "s/\(.*\)=\(.*\)/env[\1]='\2'/" >/etc/php/conf.d/env.conf
 
