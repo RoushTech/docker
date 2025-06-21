@@ -26,7 +26,7 @@ INCLUDE ./Java.fragment.Dockerfile
 FROM ./Alpine.Dockerfile#alpine-18-base AS java-7-base
 ARG JAVA_PACKAGES="openjdk7 openjdk7-jre-base"
 ARG JAVA_VERSION=1.7
-ENV JAVA_HOME="/usr/lib/jvm/java-1.${JAVA_VERSION}-openjdk"
+ENV JAVA_HOME="/usr/lib/jvm/java-${JAVA_VERSION}-openjdk"
 INCLUDE ./Java.fragment.Dockerfile
 
 FROM java-21-base AS java-war-machine-21-base

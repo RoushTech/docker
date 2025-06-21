@@ -95,6 +95,12 @@ services:
       dockerfile: Java.Dockerfile
       target: java-tomcat-8-base
     command: ["bash", "/usr/local/bin/validate"]
+  java-7-tomcat-assertions:
+    build:
+      context: .
+      dockerfile: Java.Dockerfile
+      target: java-tomcat-7-base
+    command: ["bash", "/usr/local/bin/validate"]
 
   # PHP inherit from Base
   php-84-assertions:
@@ -128,6 +134,12 @@ services:
       context: .
       dockerfile: PHP.Dockerfile
       target: php-81-node-base
+    command: ["bash", "/usr/local/bin/validate"]
+  php-74-node-assertions:
+    build:
+      context: .
+      dockerfile: PHP.Dockerfile
+      target: php-74-node-base
     command: ["bash", "/usr/local/bin/validate"]
 
   # Magento inherit from Base+PHP+Node

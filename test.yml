@@ -28,6 +28,8 @@ services:
         condition: service_completed_successfully
       php-81-node-assertions:
         condition: service_completed_successfully
+      php-74-node-assertions:
+        condition: service_completed_successfully
       magento-php-84-assertions:
         condition: service_completed_successfully
       magento-php-81-assertions:
@@ -56,6 +58,8 @@ services:
         condition: service_completed_successfully
       java-8-tomcat-assertions:
         condition: service_completed_successfully
+      java-7-tomcat-assertions:
+        condition: service_completed_successfully
 
       # Healthchecks should be healthy.
       php-84-healthchecks:
@@ -67,6 +71,8 @@ services:
       php-84-node-healthchecks:
         condition: service_healthy
       php-81-node-healthchecks:
+        condition: service_healthy
+      php-74-node-healthchecks:
         condition: service_healthy
       magento-php-84-healthchecks:
         condition: service_healthy

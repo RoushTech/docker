@@ -37,6 +37,13 @@ services:
     configs: *configs-php
     ports:
       - "3181:80"
+  php-74-node-healthchecks:
+    build:
+      <<: *build-php
+      target: php-74-node-base
+    configs: *configs-php
+    ports:
+      - "3174:80"
   magento-php-84-healthchecks:
     build: &build-magento
       dockerfile: Magento.Dockerfile

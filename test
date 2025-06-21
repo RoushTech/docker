@@ -27,12 +27,12 @@ cleanup
 echo "Running tests ... "
 if ! $DC_CMD --progress none up --detach --wait --build; then
 	banner "Failure!" | colorize $COLOR_RED
-	echo "Container build tests failed."
+	echo "${COLOR_RED}Container build tests failed in ${COLOR_YELLOW}${SECONDS} seconds${COLOR_RED}.${COLOR_RESET}"
 	echo "  Hint: Try running ${COLOR_YELLOW}${0} failed-target${COLOR_RESET} to see more details."
 	ring_bell "fail"
 	exit 1
 fi
 
-echo "${COLOR_GREEN}Container build tests passed.${COLOR_RESET}"
+echo "${COLOR_GREEN}Container build tests passed in ${COLOR_YELLOW}${SECONDS} seconds${COLOR_GREEN}.${COLOR_RESET}"
 ring_bell "okay"
 exit 0
