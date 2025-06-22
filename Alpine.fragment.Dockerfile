@@ -8,6 +8,7 @@ LABEL org.opencontainers.image.vendor="RoushTech LLC" \
 ARG BASE_PACKAGES="\
     bash bash-completion \
     less util-linux-misc util-linux-bash-completion \
+    bind-tools iputils-ping net-tools traceroute \
     git openssh-client ca-certificates \
     wget curl \
     cronie flock \

@@ -4,6 +4,15 @@ DETECTED_ALPINE_VERSION=$(cat /etc/os-release | grep -E 'VERSION_ID' | cut -d'='
 EXPECTED_APP_USER_HOME_PATH="/home"
 EXPECTED_EXECUTABLES=(
 	"stat" "mkdir" "rmdir" # Needed by docker compose watch
+	"nano" "vim"
+	"curl" "wget"                                # HTTP tools
+	"tar" "gzip" "bzip2"                         # Archive tools
+	"ping" "traceroute" "ping" "ifconfig" "host" # Network tools
+	"runit" "sv" "chpst" "runsv" "runsvdir"      # Runit and friends
+	"dos2unix" "patch"
+)
+DO_NOT_INSTALL_EXECUTABLES=(
+	"xz" # https://en.wikipedia.org/wiki/XZ_Utils_backdoor
 )
 FAILURE=0
 
@@ -27,6 +36,13 @@ fi
 for executable in "${EXPECTED_EXECUTABLES[@]}"; do
 	if ! command -v "$executable" &>/dev/null; then
 		echo "Executable ${COLOR_GREY}${executable}${COLOR_RESET} is not found in the system"
+		FAILURE=1
+	fi
+done
+
+for executable in "${DO_NOT_INSTALL_EXECUTABLES[@]}"; do
+	if command -v "$executable" &>/dev/null; then
+		echo "Executable ${COLOR_GREY}${executable}${COLOR_RESET} should not be installed, but it is found in the system"
 		FAILURE=1
 	fi
 done
