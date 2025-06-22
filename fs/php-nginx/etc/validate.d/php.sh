@@ -28,18 +28,18 @@ else
 fi
 
 if [ -d /var/log/php ]; then
-	echo "Directory /var/log/php should not exist"
+	echo "Directory ${COLOR_GREY}/var/log/php${COLOR_RESET} should not exist."
 	exit 1
 fi
 if [ -f /var/log/php_error.log ]; then
-	echo "File /var/log/php_error.log exists"
+	echo "File ${COLOR_GREY}/var/log/php_error.log${COLOR_RESET} exists."
 else
-	echo "File /var/log/php_error.log does not exist"
+	echo "File ${COLOR_GREY}/var/log/php_error.log${COLOR_RESET} does not exist."
 	exit 1
 fi
 if [ -f /var/log/php_access.log ]; then
-	echo "File /var/log/php_access.log exists"
+	echo "File ${COLOR_GREY}/var/log/php_access.log${COLOR_RESET} exists."
 else
-	echo "File /var/log/php_access.log does not exist"
+	echo "File ${COLOR_GREY}/var/log/php_access.log${COLOR_RESET} does not exist."
 	exit 1
 fi
