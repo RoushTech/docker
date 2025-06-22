@@ -67,7 +67,6 @@ RUN <<FIX_PERMS
   /usr/local/bin/sv-fix-perms
   rm -Rf \
     /var/log/php/ /var/log/php*/ \
-    /var/log/nginx \
     /var/log/redis \
      || true
   touch /var/log/php_error.log /var/log/php_access.log
