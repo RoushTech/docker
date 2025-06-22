@@ -65,7 +65,11 @@ RUN <<FIX_PERMS
 
   # Fix execution and ownership
   /usr/local/bin/sv-fix-perms
-  rm /var/log/php/ /var/log/php*/ -Rf || true
+  rm -Rf \
+    /var/log/php/ /var/log/php*/ \
+    /var/log/nginx \
+    /var/log/redis \
+     || true
   touch /var/log/php_error.log /var/log/php_access.log
   chown app:app -R \
     /app \
