@@ -13,7 +13,7 @@ source /usr/local/share/common.sh
 
 	# Run once first to populate cron lists. If it fails, disable cron.
 	if ! chpst -u app magento cron:run --group consumers; then
-		echo "[$DIR] Magento consumers failed to run, disabling consumers."
+		echo "Magento consumers failed to run, disabling consumers."
 		sleep infinity
 		exit 1
 	fi
