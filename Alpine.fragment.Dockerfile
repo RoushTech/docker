@@ -5,17 +5,6 @@ LABEL org.opencontainers.image.vendor="RoushTech LLC" \
       org.opencontainers.image.source="https://github.com/RoushTech/docker" \
       org.opencontainers.image.documentation="https://github.com/RoushTech/docker/blob/main/README.md" \
       net.roushtech.version.alpine=${ALPINE_VERSION}
-ARG BASE_PACKAGES="\
-    bash bash-completion \
-    less util-linux-misc util-linux-bash-completion \
-    bind-tools iputils-ping net-tools traceroute \
-    git openssh-client ca-certificates \
-    wget curl \
-    cronie flock \
-    nano vim \
-    figlet ncurses \
-    runuser runit \
-    dos2unix patch"
 
 ENV TERM=xterm-256color \
     PATH="/app:/app/bin:$PATH" \
