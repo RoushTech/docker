@@ -7,6 +7,7 @@ ARG BASE_PACKAGES="\
     bind-tools iputils net-tools \
     git openssh-client ca-certificates \
     wget curl \
+    tar gzip xz bzip2 \
     cronie flock \
     nano vim \
     figlet ncurses \
@@ -25,6 +26,7 @@ ARG BASE_PACKAGES="\
     bind-tools iputils-ping net-tools traceroute \
     git openssh-client ca-certificates \
     wget curl \
+    tar gzip xz bzip2 \
     cronie flock \
     nano vim \
     figlet ncurses \
@@ -43,6 +45,7 @@ ARG BASE_PACKAGES="\
     bind-tools iputils-ping net-tools traceroute \
     git openssh-client ca-certificates \
     wget curl \
+    tar gzip xz bzip2 \
     cronie flock \
     nano vim \
     figlet ncurses \
@@ -61,6 +64,7 @@ ARG BASE_PACKAGES="\
     bind-tools iputils-ping net-tools traceroute \
     git openssh-client ca-certificates \
     wget curl \
+    tar gzip xz bzip2 \
     cronie flock \
     nano vim \
     figlet ncurses \
