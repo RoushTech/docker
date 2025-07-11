@@ -48,7 +48,7 @@ STOPSIGNAL SIGHUP
 CMD ["/usr/local/bin/entrypoint"]
 
 RUN <<FINALISE
-  rm /root/.bashrc /root/.profile /home/.bashrc /home/.profile >/dev/null 2>&1 || true
+  rm /root/.bashrc /root/.profile /home/.bashrc /home/.profile /etc/profile.d/00-bashrc.sh >/dev/null 2>&1 || true
   ln -s /etc/profile /root/.bashrc
   ln -s /etc/profile /root/.profile
   ln -s /etc/profile /home/.bashrc

@@ -1,0 +1,14 @@
+#!/bin/bash
+set -e
+if [ ! -d /usr/local/share/php-benchmark-script ]; then
+    echo "Downloading PHP benchmark script..."
+    wget -q -O /tmp/php-benchmark-script.zip https://github.com/sergix44/php-benchmark-script/archive/refs/heads/master.zip
+    echo "Unpacking PHP benchmark script..."
+    unzip -q /tmp/php-benchmark-script.zip -d /tmp
+    mv /tmp/php-benchmark-script-master /usr/local/share/php-benchmark-script
+    # Disable MySQL benchmark script
+    mv /usr/local/share/php-benchmark-script/mysql.bench.php /usr/local/share/php-benchmark-script/mysql.bench.php.disabled
+    rm /tmp/php-benchmark-script.zip
+    echo "PHP benchmark script installed to /usr/local/share/php-benchmark-script"
+fi
+php /usr/local/share/php-benchmark-script/bench.php --multiplier=2
