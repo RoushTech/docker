@@ -42,19 +42,19 @@ FROM java-8-base AS java-war-machine-8-base
 INCLUDE ./Java.War.fragment.Dockerfile
 
 FROM java-21-base AS java-tomcat-21-base
-ARG TOMCAT_VERSION=9.0.106
+ARG TOMCAT_VERSION=9.0.107
 INCLUDE ./Java.Tomcat.fragment.Dockerfile
 
 FROM java-17-base AS java-tomcat-17-base
-ARG TOMCAT_VERSION=9.0.106
+ARG TOMCAT_VERSION=9.0.107
 INCLUDE ./Java.Tomcat.fragment.Dockerfile
 
 FROM java-11-base AS java-tomcat-11-base
-ARG TOMCAT_VERSION=9.0.106
+ARG TOMCAT_VERSION=9.0.107
 INCLUDE ./Java.Tomcat.fragment.Dockerfile
 
 FROM java-8-base AS java-tomcat-8-base
-ARG TOMCAT_VERSION=9.0.106
+ARG TOMCAT_VERSION=9.0.107
 INCLUDE ./Java.Tomcat.fragment.Dockerfile
 
 FROM java-7-base AS java-tomcat-7-base
