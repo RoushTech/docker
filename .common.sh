@@ -88,8 +88,13 @@ function banner() {
 	if [ -x "$(command -v figlet)" ]; then
 		FIGLET_FONT=${FIGLET_FONT:-slant}
 		COLS=$(/usr/bin/tput cols) || 160
-
-		figlet -w $COLS -f $FIGLET_FONT "$@" | lolcat || figlet -w $COLS -f $FIGLET_FONT "$@"
+		if [ -x "$(command -v lolcat)" ]; then
+      # if lolcat is installed, use it to colorize the output
+      figlet -w $COLS -f $FIGLET_FONT "$@" | lolcat -a -d 1
+    else
+      # if lolcat is not installed, just use figlet
+      figlet -w $COLS -f $FIGLET_FONT "$@"
+    fi
 	else
 		echo "**********************************************************"
 		echo "   $1"
