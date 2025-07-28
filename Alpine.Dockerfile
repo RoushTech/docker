@@ -3,7 +3,7 @@ FROM alpine:3.15 AS alpine-15-base
 ENV ALPINE_VERSION=3.15
 ARG BASE_PACKAGES="\
     bash bash-completion \
-    pv bc btop \
+    pv bc \
     less util-linux-misc util-linux-bash-completion \
     bind-tools iputils net-tools \
     git openssh-client ca-certificates \
