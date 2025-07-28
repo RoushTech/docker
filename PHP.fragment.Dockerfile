@@ -15,8 +15,6 @@ LABEL net.roushtech.version.php=${PHP_VERSION} \
       net.roushtech.version.nginx=${NGINX_VERSION} \
       net.roushtech.version.composer=${COMPOSER_VERSION}
 
-VOLUME /var/cache/.composer
-
 # hadolint ignore=DL3018
 RUN <<INSTALL_PHP_AND_FRIENDS
   # Install PHP+Friends

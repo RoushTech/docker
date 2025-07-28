@@ -21,10 +21,6 @@ USER root
 COPY ./fs/node/. /
 RUN sv-fix-perms
 
-# Creating a volume for npm cache stuff to improve build performance.
-VOLUME $NPM_CACHE_DIR
-VOLUME $YARN_CACHE_FOLDER
-
 # Install packages
 RUN <<NODE_INSTALL_PACKAGES
   mkdir -p $NPM_CACHE_DIR $YARN_CACHE_FOLDER
