@@ -3,6 +3,7 @@ FROM alpine:3.15 AS alpine-15-base
 ENV ALPINE_VERSION=3.15
 ARG BASE_PACKAGES="\
     bash bash-completion \
+    pv bc btop \
     less util-linux-misc util-linux-bash-completion \
     bind-tools iputils net-tools \
     git openssh-client ca-certificates \
@@ -22,6 +23,7 @@ FROM alpine:3.18 AS alpine-18-base
 ENV ALPINE_VERSION=3.18
 ARG BASE_PACKAGES="\
     bash bash-completion \
+    pv bc btop \
     less util-linux-misc util-linux-bash-completion \
     bind-tools iputils-ping net-tools traceroute \
     git openssh-client ca-certificates \
@@ -41,6 +43,7 @@ FROM alpine:3.21 AS alpine-21-base
 ENV ALPINE_VERSION=3.21
 ARG BASE_PACKAGES="\
     bash bash-completion \
+    pv bc btop \
     less util-linux-misc util-linux-bash-completion \
     bind-tools iputils-ping net-tools traceroute \
     git openssh-client ca-certificates \
@@ -60,6 +63,7 @@ FROM alpine:3.22 AS alpine-22-base
 ENV ALPINE_VERSION=3.22
 ARG BASE_PACKAGES="\
     bash bash-completion \
+    pv bc btop \
     less util-linux-misc util-linux-bash-completion \
     bind-tools iputils-ping net-tools traceroute \
     git openssh-client ca-certificates \
