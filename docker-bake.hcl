@@ -116,7 +116,10 @@ target "php" {
   target = "php-${replace(version.version, ".", "")}-${variant.target}"
   matrix = {
     version = [
+      #{ version=8.5 },
       { version=8.4, latest=true },
+      { version=8.3 },
+      { version=8.2 },
       { version=8.1 },
       { version=7.4 },
     ]
@@ -141,7 +144,10 @@ target "magento" {
   target = "magento-${replace(version.php_version, ".", "")}-node-base"
   matrix = {
     version = [
+      #{ php_version = 8.5 },
       { php_version = 8.4, latest = true },
+      { php_version = 8.3 },
+      { php_version = 8.2 },
       { php_version = 8.1 },
     ]
   }

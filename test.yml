@@ -20,17 +20,29 @@ services:
       # PHP related
       php-84-assertions:
         condition: service_completed_successfully
+      php-83-assertions:
+        condition: service_completed_successfully
+      php-82-assertions:
+        condition: service_completed_successfully
       php-81-assertions:
         condition: service_completed_successfully
       php-74-assertions:
         condition: service_completed_successfully
       php-84-node-assertions:
         condition: service_completed_successfully
+      php-83-node-assertions:
+        condition: service_completed_successfully
+      php-82-node-assertions:
+        condition: service_completed_successfully
       php-81-node-assertions:
         condition: service_completed_successfully
       php-74-node-assertions:
         condition: service_completed_successfully
       magento-php-84-assertions:
+        condition: service_completed_successfully
+      magento-php-83-assertions:
+        condition: service_completed_successfully
+      magento-php-82-assertions:
         condition: service_completed_successfully
       magento-php-81-assertions:
         condition: service_completed_successfully
@@ -64,17 +76,29 @@ services:
       # Healthchecks should be healthy.
       php-84-healthchecks:
         condition: service_healthy
+      php-83-healthchecks:
+        condition: service_healthy
+      php-82-healthchecks:
+        condition: service_healthy
       php-81-healthchecks:
         condition: service_healthy
       php-74-healthchecks:
         condition: service_healthy
       php-84-node-healthchecks:
         condition: service_healthy
+      php-83-node-healthchecks:
+        condition: service_healthy
+      php-82-node-healthchecks:
+        condition: service_healthy
       php-81-node-healthchecks:
         condition: service_healthy
       php-74-node-healthchecks:
         condition: service_healthy
       magento-php-84-healthchecks:
+        condition: service_healthy
+      magento-php-83-healthchecks:
+        condition: service_healthy
+      magento-php-82-healthchecks:
         condition: service_healthy
       magento-php-81-healthchecks:
         condition: service_healthy

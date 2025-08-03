@@ -78,3 +78,23 @@ INCLUDE ./Alpine.fragment.Dockerfile
 FROM alpine-22-base AS builder-22-base
 ARG BUILDER_PACKAGES="build-base linux-headers openssl-dev zlib-dev"
 RUN apk add --no-cache $BUILDER_PACKAGES
+
+FROM alpine:edge AS alpine-edge-base
+ENV ALPINE_VERSION=3.22
+ARG BASE_PACKAGES="\
+    bash bash-completion \
+    pv bc btop \
+    less util-linux-misc util-linux-bash-completion \
+    bind-tools iputils-ping net-tools traceroute \
+    git openssh-client ca-certificates \
+    wget curl \
+    tar gzip xz bzip2 \
+    cronie flock \
+    nano vim \
+    figlet ncurses \
+    runuser runit \
+    dos2unix patch"
+INCLUDE ./Alpine.fragment.Dockerfile
+FROM alpine-edge-base AS builder-edge-base
+ARG BUILDER_PACKAGES="build-base linux-headers openssl-dev zlib-dev"
+RUN apk add --no-cache $BUILDER_PACKAGES

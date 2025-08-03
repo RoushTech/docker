@@ -103,11 +103,29 @@ services:
     command: ["bash", "/usr/local/bin/validate"]
 
   # PHP inherit from Base
+  #php-85-assertions:
+  #  build:
+  #    context: .
+  #    dockerfile: PHP.Dockerfile
+  #    target: php-85-base
+  #  command: ["bash", "/usr/local/bin/validate"]
   php-84-assertions:
     build:
       context: .
       dockerfile: PHP.Dockerfile
       target: php-84-base
+    command: ["bash", "/usr/local/bin/validate"]
+  php-83-assertions:
+    build:
+      context: .
+      dockerfile: PHP.Dockerfile
+      target: php-83-base
+    command: ["bash", "/usr/local/bin/validate"]
+  php-82-assertions:
+    build:
+      context: .
+      dockerfile: PHP.Dockerfile
+      target: php-82-base
     command: ["bash", "/usr/local/bin/validate"]
   php-81-assertions:
     build:
@@ -123,11 +141,29 @@ services:
     command: ["bash", "/usr/local/bin/validate"]
 
   # PHP+Node inherit from Base+PHP
+  #php-85-node-assertions:
+  #  build:
+  #    context: .
+  #    dockerfile: PHP.Dockerfile
+  #    target: php-85-node-base
+  #  command: ["bash", "/usr/local/bin/validate"]
   php-84-node-assertions:
     build:
       context: .
       dockerfile: PHP.Dockerfile
       target: php-84-node-base
+    command: ["bash", "/usr/local/bin/validate"]
+  php-83-node-assertions:
+    build:
+      context: .
+      dockerfile: PHP.Dockerfile
+      target: php-83-node-base
+    command: ["bash", "/usr/local/bin/validate"]
+  php-82-node-assertions:
+    build:
+      context: .
+      dockerfile: PHP.Dockerfile
+      target: php-82-node-base
     command: ["bash", "/usr/local/bin/validate"]
   php-81-node-assertions:
     build:
@@ -143,10 +179,25 @@ services:
     command: ["bash", "/usr/local/bin/validate"]
 
   # Magento inherit from Base+PHP+Node
+  #magento-php-85-assertions:
+  #  build:
+  #    dockerfile: Magento.Dockerfile
+  #    target: magento-85-node-base
+  #  command: ["bash", "/usr/local/bin/validate"]
   magento-php-84-assertions:
     build:
       dockerfile: Magento.Dockerfile
       target: magento-84-node-base
+    command: ["bash", "/usr/local/bin/validate"]
+  magento-php-83-assertions:
+    build:
+      dockerfile: Magento.Dockerfile
+      target: magento-83-node-base
+    command: ["bash", "/usr/local/bin/validate"]
+  magento-php-82-assertions:
+    build:
+      dockerfile: Magento.Dockerfile
+      target: magento-82-node-base
     command: ["bash", "/usr/local/bin/validate"]
   magento-php-81-assertions:
     build:

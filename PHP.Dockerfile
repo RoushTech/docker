@@ -1,4 +1,27 @@
 # syntax = devthefuture/dockerfile-x
+
+#       ____  __  ______  ____    ______
+#      / __ \/ / / / __ \( __ )  / ____/
+#     / /_/ / /_/ / /_/ / __  | /___ \
+#    / ____/ __  / ____/ /_/ / ____/ /
+#   /_/   /_/ /_/_/    \____(_)_____/
+FROM ./Alpine.Dockerfile#alpine-edge-base AS php-85-base
+ARG NGINX_VERSION=1.28
+ARG PHP_VERSION=8.5
+ARG COMPOSER_VERSION=latest-stable
+ARG PHP_PACKAGES="php85 php85-bcmath php85-bz2 php85-calendar php85-ctype php85-curl php85-dom php85-exif php85-fileinfo php85-ftp \
+                  php85-fpm php85-gd php85-gettext php85-gmp php85-iconv php85-intl php85-ldap php85-mbstring \
+                  php85-mysqli php85-mysqlnd php85-odbc php85-openssl php85-pcntl \
+                  php85-pdo php85-pdo_dblib php85-pdo_mysql php85-pdo_odbc php85-pdo_pgsql php85-pdo_sqlite php85-pgsql php85-phar \
+                  php85-posix php85-session php85-shmop php85-simplexml php85-snmp php85-soap php85-sockets php85-sodium php85-sqlite3 \
+                  php85-sysvmsg php85-sysvsem php85-sysvshm php85-tidy php85-tokenizer php85-xml php85-xmlreader php85-xmlwriter \
+                  php85-xsl php85-zip php85-zlib \
+                  php85-pecl-apcu php85-pecl-xdebug"
+                  # MB: Missing: redis, opcache, imap packages.
+ARG EXTRA_PACKAGES="nginx sqlite postgresql-client mysql-client mariadb-connector-c redis"
+RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories
+INCLUDE ./PHP.fragment.Dockerfile
+
 #       ____  __  ______  ____  __ __
 #      / __ \/ / / / __ \( __ )/ // /
 #     / /_/ / /_/ / /_/ / __  / // /_
@@ -16,6 +39,46 @@ ARG PHP_PACKAGES="php84 php84-bcmath php84-bz2 php84-calendar php84-ctype php84-
                   php84-sysvmsg php84-sysvsem php84-sysvshm php84-tidy php84-tokenizer php84-xml php84-xmlreader php84-xmlwriter \
                   php84-xsl php84-zip php84-zlib \
                   php84-pecl-apcu php84-pecl-redis php84-pecl-msgpack php84-pecl-xdebug"
+ARG EXTRA_PACKAGES="nginx sqlite postgresql-client mysql-client mariadb-connector-c redis"
+INCLUDE ./PHP.fragment.Dockerfile
+
+#       ____  __  ______  ____   _____
+#      / __ \/ / / / __ \( __ ) |__  /
+#     / /_/ / /_/ / /_/ / __  |  /_ <
+#    / ____/ __  / ____/ /_/ / ___/ /
+#   /_/   /_/ /_/_/    \____(_)____/
+FROM ./Alpine.Dockerfile#alpine-22-base AS php-83-base
+ARG NGINX_VERSION=1.28
+ARG PHP_VERSION=8.3
+ARG COMPOSER_VERSION=latest-stable
+ARG PHP_PACKAGES="php83 php83-bcmath php83-bz2 php83-calendar php83-ctype php83-curl php83-dom php83-exif php83-fileinfo php83-ftp \
+                  php83-fpm php83-gd php83-gettext php83-gmp php83-iconv php83-imap php83-intl php83-ldap php83-mbstring \
+                  php83-mysqli php83-mysqlnd php83-odbc php83-opcache php83-openssl php83-pcntl \
+                  php83-pdo php83-pdo_dblib php83-pdo_mysql php83-pdo_odbc php83-pdo_pgsql php83-pdo_sqlite php83-pgsql php83-phar \
+                  php83-posix php83-session php83-shmop php83-simplexml php83-snmp php83-soap php83-sockets php83-sodium php83-sqlite3 \
+                  php83-sysvmsg php83-sysvsem php83-sysvshm php83-tidy php83-tokenizer php83-xml php83-xmlreader php83-xmlwriter \
+                  php83-xsl php83-zip php83-zlib \
+                  php83-pecl-apcu php83-pecl-redis php83-pecl-msgpack php83-pecl-xdebug"
+ARG EXTRA_PACKAGES="nginx sqlite postgresql-client mysql-client mariadb-connector-c redis"
+INCLUDE ./PHP.fragment.Dockerfile
+
+#       ____  __  ______  ____   ___ 
+#      / __ \/ / / / __ \( __ ) |__ \
+#     / /_/ / /_/ / /_/ / __  | __/ /
+#    / ____/ __  / ____/ /_/ / / __/ 
+#   /_/   /_/ /_/_/    \____(_)____/ 
+FROM ./Alpine.Dockerfile#alpine-22-base AS php-82-base
+ARG NGINX_VERSION=1.28
+ARG PHP_VERSION=8.2
+ARG COMPOSER_VERSION=latest-stable
+ARG PHP_PACKAGES="php82 php82-bcmath php82-bz2 php82-calendar php82-ctype php82-curl php82-dom php82-exif php82-fileinfo php82-ftp \
+                  php82-fpm php82-gd php82-gettext php82-gmp php82-iconv php82-imap php82-intl php82-ldap php82-mbstring \
+                  php82-mysqli php82-mysqlnd php82-odbc php82-opcache php82-openssl php82-pcntl \
+                  php82-pdo php82-pdo_dblib php82-pdo_mysql php82-pdo_odbc php82-pdo_pgsql php82-pdo_sqlite php82-pgsql php82-phar \
+                  php82-posix php82-session php82-shmop php82-simplexml php82-snmp php82-soap php82-sockets php82-sodium php82-sqlite3 \
+                  php82-sysvmsg php82-sysvsem php82-sysvshm php82-tidy php82-tokenizer php82-xml php82-xmlreader php82-xmlwriter \
+                  php82-xsl php82-zip php82-zlib \
+                  php82-pecl-apcu php82-pecl-redis php82-pecl-msgpack php82-pecl-xdebug"
 ARG EXTRA_PACKAGES="nginx sqlite postgresql-client mysql-client mariadb-connector-c redis"
 INCLUDE ./PHP.fragment.Dockerfile
 
@@ -39,7 +102,6 @@ ARG PHP_PACKAGES="php81 php81-bcmath php81-bz2 php81-calendar php81-ctype php81-
 ARG EXTRA_PACKAGES="nginx sqlite postgresql-client mysql-client mariadb-connector-c redis"
 INCLUDE ./PHP.fragment.Dockerfile
 
-
 #       ____  __  ______  _____ __ __
 #      / __ \/ / / / __ \/__  // // /
 #     / /_/ / /_/ / /_/ /  / // // /_
@@ -60,7 +122,25 @@ ARG PHP_PACKAGES="php7 php7-bcmath php7-bz2 php7-calendar php7-ctype php7-curl p
 ARG EXTRA_PACKAGES="nginx sqlite postgresql-client mysql-client mariadb-connector-c redis"
 INCLUDE ./PHP.fragment.Dockerfile
 
+FROM php-85-base AS php-85-node-base
+ARG NODE_VERSION=22
+ARG YARN_VERSION=1.22
+ARG NPM_VERSION=11
+INCLUDE ./PHP-Node.fragment.Dockerfile
+
 FROM php-84-base AS php-84-node-base
+ARG NODE_VERSION=22
+ARG YARN_VERSION=1.22
+ARG NPM_VERSION=11
+INCLUDE ./PHP-Node.fragment.Dockerfile
+
+FROM php-83-base AS php-83-node-base
+ARG NODE_VERSION=22
+ARG YARN_VERSION=1.22
+ARG NPM_VERSION=11
+INCLUDE ./PHP-Node.fragment.Dockerfile
+
+FROM php-82-base AS php-82-node-base
 ARG NODE_VERSION=22
 ARG YARN_VERSION=1.22
 ARG NPM_VERSION=11
