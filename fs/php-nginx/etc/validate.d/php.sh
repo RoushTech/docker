@@ -1,7 +1,7 @@
 #!/bin/bash
 set -eu
 source /usr/local/share/common.sh
-
+php --version
 DETECTED_PHP_VERSION=$(php --version | head -n 1 | cut -d' ' -f2 | cut -d'.' -f1-2)
 
 echo -e "PHP version\n detected: ${COLOR_GREY}${DETECTED_PHP_VERSION}${COLOR_RESET}\n expected: ${COLOR_GREY}${PHP_VERSION}${COLOR_RESET}"

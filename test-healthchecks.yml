@@ -19,6 +19,15 @@ services:
         target: /app/public/index.php
     ports:
       - "3084:80"
+    environment: &php-prod-env
+      PHP_DEBUG_MODE: "Off"
+  php-84-debug-healthchecks:
+    build:
+      <<: *build-php
+      target: php-84-base
+    configs: *configs-php
+    environment: &php-debug-env
+      PHP_DEBUG_MODE: "On"
   php-83-healthchecks:
     build:
       <<: *build-php
@@ -26,6 +35,13 @@ services:
     configs: *configs-php
     ports:
       - "3083:80"
+    environment: *php-prod-env
+  php-83-debug-healthchecks:
+    build:
+      <<: *build-php
+      target: php-83-base
+    configs: *configs-php
+    environment: *php-debug-env
   php-82-healthchecks:
     build:
       <<: *build-php
