@@ -28,7 +28,8 @@ target "base" {
       { variant="builder", target="builder", description="Roushtech-flavoured Alpine Linux base image that has build tools installed" },
     ]
     version = [
-      { version=22, latest=true },
+      { version=23, latest=true },
+      { version=22 },
       { version=21 },
       { version=18 },
       { version=15 },
