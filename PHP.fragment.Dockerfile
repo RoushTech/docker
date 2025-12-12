@@ -95,4 +95,4 @@ HEALTHCHECK --interval=5s --start-period=10s \
 
 USER root
 SHELL ["/bin/bash", "-ce"]
-#RUN /usr/local/bin/validate
+RUN /usr/local/bin/validate
