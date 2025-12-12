@@ -182,3 +182,24 @@ target "dotnet" {
     "org.opencontainers.image.description" = ".NET ${version.version} base image"
   }
 }
+
+target "node" {
+  dockerfile = "Node.Dockerfile"
+  name = "node-${version.version}"
+  target = "node-${version.version}-base"
+  matrix = {
+    version = [
+      //{ version=24, latest=true },
+      { version=22 },
+    ]
+  }
+  tags = compact([
+    try(version.latest ? "ghcr.io/roushtech/docker/node:latest" : null, null),
+    "ghcr.io/roushtech/docker/node:${version.version}",
+    "ghcr.io/roushtech/docker/node:${version.version}-${TIMESTAMP}",
+  ])
+  platforms  = PLATFORMS
+  labels = {
+    "org.opencontainers.image.description" = "Nodejs ${version.version} base image"
+  }
+}
