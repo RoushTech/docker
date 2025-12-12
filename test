@@ -25,7 +25,7 @@ docker_pull_base_images "Alpine.Dockerfile"
 cleanup
 
 echo "Running tests ... "
-if ! $DC_CMD up --detach --wait --build test; then
+if ! $DC_CMD --progress none up --detach --wait --build test; then
 	banner "Failure!"
 	echo "${COLOR_RED}Container build tests failed in ${COLOR_YELLOW}${SECONDS} seconds${COLOR_RED}.${COLOR_RESET}"
 	echo "  Hint: Try running ${COLOR_YELLOW}${0} failed-target${COLOR_RESET} to see more details."

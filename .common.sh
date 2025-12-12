@@ -127,7 +127,7 @@ function docker_pull_base_images() {
 		exit 1
 	fi
 	local images=$(grep FROM $dockerfile | cut -f2 -d' ' | grep "/\|:" | sort -u)
-	echo "Found ${#images[@]} base images in $dockerfile:"
+	echo "Found base images in $dockerfile:"
 	for image in $images; do
 		echo "  - $image"
 	done
