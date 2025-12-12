@@ -5,7 +5,7 @@
 #     / /_/ / /_/ / /_/ / __  | /___ \
 #    / ____/ __  / ____/ /_/ / ____/ /
 #   /_/   /_/ /_/_/    \____(_)_____/
-FROM ./Alpine.Dockerfile#alpine-edge-base AS php-85-base
+FROM ./Alpine.Dockerfile#alpine-23-base AS php-85-base
 ARG NGINX_VERSION=1.28
 ARG PHP_VERSION=8.5
 ARG COMPOSER_VERSION=latest-stable
@@ -16,8 +16,8 @@ ARG PHP_PACKAGES="php85 php85-bcmath php85-bz2 php85-calendar php85-ctype php85-
                   php85-posix php85-session php85-shmop php85-simplexml php85-snmp php85-soap php85-sockets php85-sodium php85-sqlite3 \
                   php85-sysvmsg php85-sysvsem php85-sysvshm php85-tidy php85-tokenizer php85-xml php85-xmlreader php85-xmlwriter \
                   php85-xsl php85-zip php85-zlib \
-                  php85-pecl-apcu php85-pecl-xdebug"
-                  # MB: Missing: redis, opcache, imap packages.
+                  php85-pecl-apcu php85-pecl-redis php85-pecl-igbinary php85-pecl-imap php85-pecl-msgpack php85-pecl-xdebug"
+                  # MB: Missing: opcache packages.
 ARG EXTRA_PACKAGES="nginx sqlite postgresql-client mysql-client mariadb-connector-c redis"
 RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories
 INCLUDE ./PHP.fragment.Dockerfile
@@ -123,7 +123,7 @@ ARG EXTRA_PACKAGES="nginx sqlite postgresql-client mysql-client mariadb-connecto
 INCLUDE ./PHP.fragment.Dockerfile
 
 FROM php-85-base AS php-85-node-base
-ARG NODE_VERSION=22
+ARG NODE_VERSION=24
 ARG YARN_VERSION=1.22
 ARG NPM_VERSION=11
 INCLUDE ./PHP-Node.fragment.Dockerfile

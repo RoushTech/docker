@@ -4,10 +4,12 @@ include:
 
 services:
   test:
-    image: alpine:3.22
+    image: alpine:3.23
     command: ["sleep", "infinity"]
     depends_on:
       # Validation scripts should just exit 0 if the container is happy
+      base-23-assertions:
+        condition: service_completed_successfully
       base-22-assertions:
         condition: service_completed_successfully
       base-21-assertions:
@@ -18,6 +20,8 @@ services:
         condition: service_completed_successfully
 
       # PHP related
+      php-85-assertions:
+        condition: service_completed_successfully
       php-84-assertions:
         condition: service_completed_successfully
       php-83-assertions:
@@ -37,6 +41,8 @@ services:
       php-81-node-assertions:
         condition: service_completed_successfully
       php-74-node-assertions:
+        condition: service_completed_successfully
+      magento-php-85-assertions:
         condition: service_completed_successfully
       magento-php-84-assertions:
         condition: service_completed_successfully
@@ -74,6 +80,8 @@ services:
         condition: service_completed_successfully
 
       # Healthchecks should be healthy.
+      php-85-healthchecks:
+        condition: service_healthy
       php-84-healthchecks:
         condition: service_healthy
       php-83-healthchecks:
@@ -84,6 +92,8 @@ services:
         condition: service_healthy
       php-74-healthchecks:
         condition: service_healthy
+      php-85-node-healthchecks:
+        condition: service_healthy
       php-84-node-healthchecks:
         condition: service_healthy
       php-83-node-healthchecks:
@@ -93,6 +103,8 @@ services:
       php-81-node-healthchecks:
         condition: service_healthy
       php-74-node-healthchecks:
+        condition: service_healthy
+      magento-php-85-healthchecks:
         condition: service_healthy
       magento-php-84-healthchecks:
         condition: service_healthy

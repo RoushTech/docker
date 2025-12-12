@@ -1,4 +1,10 @@
 services:
+  base-23-assertions:
+    build:
+      context: .
+      dockerfile: Alpine.Dockerfile
+      target: alpine-23-base
+    command: ["bash", "/usr/local/bin/validate"]
   base-22-assertions:
     build:
       context: .
@@ -103,12 +109,12 @@ services:
     command: ["bash", "/usr/local/bin/validate"]
 
   # PHP inherit from Base
-  #php-85-assertions:
-  #  build:
-  #    context: .
-  #    dockerfile: PHP.Dockerfile
-  #    target: php-85-base
-  #  command: ["bash", "/usr/local/bin/validate"]
+  php-85-assertions:
+    build:
+      context: .
+      dockerfile: PHP.Dockerfile
+      target: php-85-base
+    command: ["bash", "/usr/local/bin/validate"]
   php-84-assertions:
     build:
       context: .
@@ -141,12 +147,12 @@ services:
     command: ["bash", "/usr/local/bin/validate"]
 
   # PHP+Node inherit from Base+PHP
-  #php-85-node-assertions:
-  #  build:
-  #    context: .
-  #    dockerfile: PHP.Dockerfile
-  #    target: php-85-node-base
-  #  command: ["bash", "/usr/local/bin/validate"]
+  php-85-node-assertions:
+    build:
+      context: .
+      dockerfile: PHP.Dockerfile
+      target: php-85-node-base
+    command: ["bash", "/usr/local/bin/validate"]
   php-84-node-assertions:
     build:
       context: .
@@ -179,11 +185,11 @@ services:
     command: ["bash", "/usr/local/bin/validate"]
 
   # Magento inherit from Base+PHP+Node
-  #magento-php-85-assertions:
-  #  build:
-  #    dockerfile: Magento.Dockerfile
-  #    target: magento-85-node-base
-  #  command: ["bash", "/usr/local/bin/validate"]
+  magento-php-85-assertions:
+    build:
+      dockerfile: Magento.Dockerfile
+      target: magento-85-node-base
+    command: ["bash", "/usr/local/bin/validate"]
   magento-php-84-assertions:
     build:
       dockerfile: Magento.Dockerfile

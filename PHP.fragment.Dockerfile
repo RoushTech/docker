@@ -24,17 +24,28 @@ RUN <<INSTALL_PHP_AND_FRIENDS
   deluser nginx || true
   deluser postgres || true
   deluser redis || true
+
+  # Remove the default php config files
+  rm /etc/php /etc/php* -Rf || true
 INSTALL_PHP_AND_FRIENDS
+
+# Copy in our php+nginx filesystem
+COPY ./fs/php-nginx/. /
+
+RUN <<DISABLE_OPCACHE_INCLUSION_ON_PHP85
+if [[ "$PHP_VERSION" == "8.5"* ]]; then
+  echo "Disabling opcache zend_extension inclusion for PHP 8.5"
+  # MB: Comment out "zend_extension" with a ;, its not compatible with PHP 8.5 yet.
+  sed -i 's/^zend_extension/;zend_extension/' /etc/php/conf.d/*_opcache.ini
+  cat /etc/php/conf.d/*_opcache.ini
+fi
+DISABLE_OPCACHE_INCLUSION_ON_PHP85
 
 RUN <<INSTALL_COMPOSER
   # Install composer
   curl https://getcomposer.org/download/$COMPOSER_VERSION/composer.phar --output /usr/local/bin/composer --silent
   chmod +x /usr/local/bin/composer
 INSTALL_COMPOSER
-
-# Remove the default php config files
-RUN rm /etc/php /etc/php* -Rf || true
-COPY ./fs/php-nginx/. /
 
 # Fix perms
 RUN <<FIX_PERMS

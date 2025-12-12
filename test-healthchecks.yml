@@ -1,22 +1,19 @@
 services:
-  #php-85-healthchecks:
-  #  build: &build-php
-  #    context: .
-  #    dockerfile: PHP.Dockerfile
-  #    target: php-85-base
-  #  configs: &configs-php
-  #    - source: php_info
-  #      target: /app/public/index.php
-  #  ports:
-  #    - "3085:80"
-  php-84-healthchecks:
+  php-85-healthchecks:
     build: &build-php
       context: .
       dockerfile: PHP.Dockerfile
-      target: php-84-base
+      target: php-85-base
     configs: &configs-php
       - source: php_info
         target: /app/public/index.php
+    ports:
+      - "3085:80"
+  php-84-healthchecks:
+    build:
+      <<: *build-php
+      target: php-84-base
+    configs: *configs-php
     ports:
       - "3084:80"
     environment: &php-prod-env
@@ -63,13 +60,13 @@ services:
     configs: *configs-php
     ports:
       - "3074:80"
-  #php-85-node-healthchecks:
-  #  build:
-  #    <<: *build-php
-  #    target: php-85-node-base
-  #  configs: *configs-php
-  #  ports:
-  #    - "3185:80"
+  php-85-node-healthchecks:
+    build:
+      <<: *build-php
+      target: php-85-node-base
+    configs: *configs-php
+    ports:
+      - "3185:80"
   php-84-node-healthchecks:
     build:
       <<: *build-php
@@ -105,22 +102,20 @@ services:
     configs: *configs-php
     ports:
       - "3174:80"
-  #magento-php-85-healthchecks:
-  #  build: &build-magento
-  #    dockerfile: Magento.Dockerfile
-  #    target: magento-85-node-base
-  #  configs: &configs-magento
-  #    - source: php_info
-  #      target: /app/pub/index.php
-  #  ports:
-  #    - "4085:80"
-  magento-php-84-healthchecks:
+  magento-php-85-healthchecks:
     build: &build-magento
       dockerfile: Magento.Dockerfile
-      target: magento-84-node-base
+      target: magento-85-node-base
     configs: &configs-magento
       - source: php_info
         target: /app/pub/index.php
+    ports:
+      - "4085:80"
+  magento-php-84-healthchecks:
+    build:
+      <<: *build-magento
+      target: magento-84-node-base
+    configs: *configs-magento
     ports:
       - "4084:80"
   magento-php-83-healthchecks:
