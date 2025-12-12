@@ -162,3 +162,23 @@ target "magento" {
     "org.opencontainers.image.description" = "Magento on PHP ${version.php_version}"
   }
 }
+target "dotnet" {
+  dockerfile = "Dotnet.Dockerfile"
+  name = "dotnet-${version.version}"
+  target = "dotnet-${version.version}-base"
+  matrix = {
+    version = [
+      { version=10, latest=true },
+      { version=9 },
+    ]
+  }
+  tags = compact([
+    try(version.latest ? "ghcr.io/roushtech/docker/dotnet:latest" : null, null),
+    "ghcr.io/roushtech/docker/dotnet:${version.version}",
+    "ghcr.io/roushtech/docker/dotnet:${version.version}-${TIMESTAMP}",
+  ])
+  platforms  = PLATFORMS
+  labels = {
+    "org.opencontainers.image.description" = ".NET ${version.version} base image"
+  }
+}
