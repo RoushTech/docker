@@ -6,7 +6,7 @@ DC_CMD="docker compose -f test.yml "
 
 function cleanup {
 	echo "Cleaning up containers..."
-	$DC_CMD down --timeout 0 --remove-orphans --volumes >/dev/null || true
+	$DC_CMD --progress quiet down --timeout 0 --remove-orphans --volumes >/dev/null || true
 }
 function finalize {
 	cleanup
