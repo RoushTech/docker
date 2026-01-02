@@ -16,6 +16,8 @@ group "default" {
     "base",
     "java", "java-war-machine", "java-tomcat",
     "php", "magento",
+    "node",
+    "dotnet",
   ]
 }
 target "base" {
